@@ -24,7 +24,8 @@
 
 body {
   background:
-    radial-gradient(1100px 550px at 50% -15%, rgba(234, 88, 12, 0.10), transparent 60%),
+    radial-gradient(1000px 520px at 50% -12%, rgba(234, 88, 12, 0.18), transparent 55%),
+    radial-gradient(700px 380px at 85% 8%, rgba(251, 191, 36, 0.06), transparent 60%),
     var(--bg);
   color: var(--text);
   font-family: var(--font-sans), system-ui, sans-serif;
@@ -37,12 +38,15 @@ body {
 }
 
 .card-glow {
-  box-shadow: 0 0 0 1px rgba(234, 88, 12, 0.06), 0 24px 48px -28px rgba(0, 0, 0, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(234, 88, 12, 0.10),
+    0 30px 60px -32px rgba(234, 88, 12, 0.22),
+    0 20px 40px -28px rgba(0, 0, 0, 0.9);
 }
 
 .text-ember {
   color: var(--accent);
-  text-shadow: 0 0 22px rgba(234, 88, 12, 0.45);
+  text-shadow: 0 0 28px rgba(234, 88, 12, 0.6);
 }
 
 .wallet-adapter-button-trigger {
