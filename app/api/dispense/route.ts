@@ -11,7 +11,7 @@ import {
   connection, ASHEM_MINT, ASHEM_DECIMALS, getDispenser,
   DISPENSE_SOL_LAMPORTS, DISPENSE_ASHEM_UI, RATE_LIMIT_MS,
 } from '@/lib/solana'
-import { lastClaim, recordClaim } from '@/lib/rateLimitStore'
+import { alreadyClaimed } from '@/lib/rateLimitChain'
 
 export const runtime = 'nodejs'
 
@@ -24,14 +24,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'invalid wallet' }, { status: 400 })
   }
 
-  const last = lastClaim(wallet)
-  if (last && Date.now() - last < RATE_LIMIT_MS) {
-    const hrs = Math.ceil((RATE_LIMIT_MS - (Date.now() - last)) / 3600_000)
-    return NextResponse.json({ error: `already claimed — try again in ~${hrs}h` }, { status: 429 })
-  }
-
   const dispenser = getDispenser()
   const recipient = new PublicKey(wallet)
+
+  // Rate-limit ON-CHAIN: el historial del destinatario es el registro (persiste en serverless)
+  try {
+    if (await alreadyClaimed(connection, dispenser.publicKey, recipient, RATE_LIMIT_MS)) {
+      const hrs = Math.round(RATE_LIMIT_MS / 3_600_000)
+      return NextResponse.json({ error: `already claimed — one claim per wallet every ${hrs}h` }, { status: 429 })
+    }
+  } catch (e: any) {
+    return NextResponse.json({ error: 'rate-limit check failed', detail: String(e?.message ?? e) }, { status: 502 })
+  }
+
   const srcAta = getAssociatedTokenAddressSync(ASHEM_MINT, dispenser.publicKey, false, TOKEN_2022_PROGRAM_ID)
   const ashemRaw = BigInt(DISPENSE_ASHEM_UI) * 10n ** BigInt(ASHEM_DECIMALS)
 
@@ -52,7 +57,6 @@ export async function POST(req: NextRequest) {
   try {
     const sig = await connection.sendTransaction(tx, [dispenser])
     await connection.confirmTransaction(sig, 'confirmed')
-    recordClaim(wallet)
     return NextResponse.json({
       ok: true, signature: sig,
       sol: DISPENSE_SOL_LAMPORTS / 1e9, ashem: DISPENSE_ASHEM_UI,
