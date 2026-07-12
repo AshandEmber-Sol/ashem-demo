@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ash & Ember ($ASHEM) — Devnet Demo
 
-## Getting Started
+An interactive, on-chain demonstration of the $ASHEM mechanism on **Solana devnet**.
+Every action here is a real transaction — nothing is simulated. This interface has
+**no smart contract of its own**; it only calls Token-2022's native instructions (and,
+for swaps, an already-deployed Raydium CPMM program).
 
-First, run the development server:
+> **Solana Devnet — test network. Nothing here has value or any relationship to mainnet.**
+> The SOL and $ASHEM dispensed are devnet-only test funds. Claiming or using them creates
+> no allocation, whitelist, or expectation for mainnet.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## What it does
+- **Claim** a small amount of devnet SOL + $ASHEM from a dedicated faucet.
+- **Transfer** $ASHEM and watch Token-2022 withhold the 1.5% fee live.
+- **Harvest** — trigger the same production GitHub Actions workflow (`endgame.sh`) that
+  harvests withheld fees and burns 2/3 (1/3 to the dev wallet). The real engine, not a
+  simulation.
+- **Live mint stats** — circulating supply, current fee, and distance to the 300M burn
+  floor, read directly from the mint.
+- **Swap** — built but currently disabled on devnet (see Notes).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Architecture
+- Frontend: Next.js (App Router). Wallet connection via Wallet Standard (Phantom/Solflare).
+- Serverless API routes handle the faucet dispense and the harvest dispatch.
+- **No custom on-chain program is deployed for this demo — on devnet or anywhere.**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Secrets & wallets — full transparency
+Same criterion as the rest of the project: every secret is documented with its exact scope
+and worst-case blast radius. All are **devnet-only** and hold **zero real value**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Dispenser wallet — `DISPENSER_KEYPAIR_PATH` (dev) / `DISPENSER_SECRET_KEY` (prod)
+- **What:** a dedicated devnet keypair that funds the faucet (holds devnet SOL + $ASHEM).
+- **Can:** sign transfers of its own devnet funds to visitors.
+- **Cannot:** mint, burn, freeze, touch the token authority, or affect anything on mainnet.
+- **Worst case if leaked:** someone drains the dispenser's devnet balance — funds with zero
+  value. Regenerate the keypair and refill. It is a dedicated wallet: not the dev wallet,
+  not any authority.
 
-## Learn More
+### GitHub dispatch token — `GH_DISPATCH_TOKEN`
+- **What:** a fine-grained GitHub PAT scoped to the single repo `AshandEmber-Sol/-ASHEM`,
+  with only `Actions: Read and write`.
+- **Can:** trigger the `endgame.yml` workflow (the harvest) and read run status.
+- **Cannot:** modify code, read repository secrets, access any other repo, or change settings.
+- **Worst case if leaked:** someone triggers extra harvest runs. The workflow only does what
+  it always does — harvest withheld fees and burn/split, all visible on-chain. It is
+  rate-limited on our side, expires, and is revocable at any time. The token holder never
+  obtains the authority keypair: that key lives only in the repo's Actions secret and never
+  touches this demo.
 
-To learn more about Next.js, take a look at the following resources:
+### Pool-tester wallet (not a runtime secret)
+A dedicated devnet keypair used only to seed the demo liquidity pool. Not an authority, not
+the dev wallet.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Run locally
+1. `npm install`
+2. Copy `.env.example` to `.env` and fill in the values.
+3. `npm run dev`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Verification
+Every action links to its transaction on Solscan (devnet). The frontend source is public;
+cite it by commit permalink, never `main`.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- **Swap on devnet:** the swap is fully implemented and verified on-chain, but disabled in
+  the UI because Phantom's transaction simulation on devnet is pathologically slow (minutes),
+  which expires the transaction's blockhash before it can be signed. This is a devnet
+  environmental issue, not a code issue — on mainnet, simulation is fast and this does not
+  occur.
