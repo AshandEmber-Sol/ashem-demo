@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import { MintStats } from '@/components/MintStats'
 import { ClaimButton } from '@/components/ClaimButton'
 import { TransferForm } from '@/components/TransferForm'
+import { HarvestButton } from '@/components/HarvestButton'
 
 const WalletMultiButton = dynamic(
   () => import('@solana/wallet-adapter-react-ui').then((m) => m.WalletMultiButton),
@@ -24,6 +25,7 @@ export default function Home() {
       <MintStats />
       <ClaimButton />
       <TransferForm />
+      <HarvestButton />
     </main>
   )
 }
