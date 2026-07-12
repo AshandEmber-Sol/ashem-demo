@@ -69,37 +69,37 @@ export function TransferForm() {
   }
 
   return (
-    <section className="rounded-xl border border-neutral-300 p-5 flex flex-col gap-3">
-      <h2 className="text-lg font-semibold">Send $ASHEM (see the fee live)</h2>
-      <p className="text-sm text-neutral-500">
+    <section className="rounded-2xl border border-edge bg-surface p-6 flex flex-col gap-3">
+      <h2 className="text-lg font-semibold">Send $ASHEM <span className="text-muted font-normal">(see the fee live)</span></h2>
+      <p className="text-sm text-muted leading-relaxed">
         Send any amount to any devnet address. Token-2022 withholds a 1.5% transfer fee
         (capped at 100,000 $ASHEM per tx) on every transfer — including this one.
       </p>
       <input
         value={to} onChange={(e) => setTo(e.target.value)}
         placeholder="Destination address"
-        className="rounded-lg border border-neutral-300 px-3 py-2 text-sm font-mono"
+        className="rounded-lg border border-edge bg-bg px-3 py-2 text-sm mono placeholder:text-muted focus:border-accent outline-none"
       />
       <input
         value={amount} onChange={(e) => setAmount(e.target.value)}
         placeholder="Amount of $ASHEM" inputMode="decimal"
-        className="rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+        className="rounded-lg border border-edge bg-bg px-3 py-2 text-sm mono placeholder:text-muted focus:border-accent outline-none"
       />
       <button
         onClick={transfer} disabled={!publicKey || loading}
-        className="self-start rounded-lg bg-amber-500 px-4 py-2 font-semibold text-black disabled:opacity-40"
+        className="self-start rounded-lg bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-hover transition-colors disabled:opacity-40"
       >
         {loading ? 'Sending…' : publicKey ? 'Send $ASHEM' : 'Connect wallet first'}
       </button>
-      {status && <p className="text-sm text-neutral-500">{status}</p>}
+      {status && <p className="text-sm text-muted">{status}</p>}
       {result && (
-        <div className="text-sm text-green-700 flex flex-col gap-1">
-          <span>Fee withheld this tx: <b>{result.fee.toLocaleString()} $ASHEM</b></span>
-          <span>Recipient received: <b>{result.received.toLocaleString()} $ASHEM</b></span>
-          <a className="underline" href={result.solscan} target="_blank" rel="noreferrer">View on Solscan</a>
+        <div className="text-sm text-green-400 flex flex-col gap-1">
+          <span>Fee withheld this tx: <b className="mono">{result.fee.toLocaleString()}</b> $ASHEM</span>
+          <span>Recipient received: <b className="mono">{result.received.toLocaleString()}</b> $ASHEM</span>
+          <a className="text-accent underline" href={result.solscan} target="_blank" rel="noreferrer">View on Solscan</a>
         </div>
       )}
-      {error && <p className="text-sm text-red-600 break-all">{error}</p>}
+      {error && <p className="text-sm text-red-400 break-all">{error}</p>}
     </section>
   )
 }

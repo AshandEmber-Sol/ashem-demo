@@ -38,38 +38,37 @@ export function MintStats() {
   }, [load])
 
   const distance = supply != null ? supply - FLOOR : null
-  const pct =
-    supply != null
-      ? Math.min(100, Math.max(0, ((START - supply) / (START - FLOOR)) * 100))
-      : 0
+  const pct = supply != null ? Math.min(100, Math.max(0, ((START - supply) / (START - FLOOR)) * 100)) : 0
+
+  const Stat = ({ label, value, ember }: { label: string; value: string; ember?: boolean }) => (
+    <div>
+      <div className="text-muted text-xs uppercase tracking-wider">{label}</div>
+      <div className={`mono text-2xl ${ember ? 'text-ember' : ''}`}>{value}</div>
+    </div>
+  )
 
   return (
-    <section className="rounded-xl border border-neutral-300 p-5 flex flex-col gap-4">
+    <section className="rounded-2xl border border-edge bg-surface p-6 flex flex-col gap-5 card-glow">
       <h2 className="text-lg font-semibold">Live on-chain state</h2>
-      {err && <p className="text-red-600 text-sm">Error reading mint: {err}</p>}
-      <div className="grid grid-cols-2 gap-4 text-sm">
-        <div>
-          <div className="text-neutral-500">Circulating supply</div>
-          <div className="text-xl font-mono">{supply != null ? fmt(supply) : '…'}</div>
-        </div>
-        <div>
-          <div className="text-neutral-500">Transfer fee</div>
-          <div className="text-xl font-mono">{feeBps != null ? `${feeBps / 100}%` : '…'}</div>
-        </div>
-        <div>
-          <div className="text-neutral-500">Burn floor</div>
-          <div className="text-xl font-mono">{fmt(FLOOR)}</div>
-        </div>
-        <div>
-          <div className="text-neutral-500">Distance to floor</div>
-          <div className="text-xl font-mono">{distance != null ? fmt(distance) : '…'}</div>
-        </div>
+      {err && <p className="text-red-400 text-sm">Error reading mint: {err}</p>}
+      <div className="grid grid-cols-2 gap-5">
+        <Stat label="Circulating supply" value={supply != null ? fmt(supply) : '…'} ember />
+        <Stat label="Transfer fee" value={feeBps != null ? `${feeBps / 100}%` : '…'} />
+        <Stat label="Burn floor" value={fmt(FLOOR)} />
+        <Stat label="Distance to floor" value={distance != null ? fmt(distance) : '…'} />
       </div>
-      <div className="flex flex-col gap-1">
-        <div className="h-3 w-full rounded-full bg-neutral-200 overflow-hidden">
-          <div className="h-full bg-amber-500" style={{ width: `${pct}%` }} />
+      <div className="flex flex-col gap-2">
+        <div className="h-2.5 w-full rounded-full bg-edge overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-700"
+            style={{
+              width: `${pct}%`,
+              background: 'linear-gradient(90deg, var(--accent), var(--glow))',
+              boxShadow: '0 0 12px rgba(234, 88, 12, 0.7)',
+            }}
+          />
         </div>
-        <div className="text-xs text-neutral-500">
+        <div className="text-xs text-muted">
           {pct.toFixed(2)}% of the way from {fmt(START)} to the {fmt(FLOOR)} floor
         </div>
       </div>

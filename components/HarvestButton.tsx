@@ -31,9 +31,9 @@ export function HarvestButton() {
   }
 
   return (
-    <section className="rounded-xl border border-neutral-300 p-5 flex flex-col gap-3">
-      <h2 className="text-lg font-semibold">Harvest &amp; burn (runs the real engine)</h2>
-      <p className="text-sm text-neutral-500">
+    <section className="rounded-2xl border border-edge bg-surface p-6 flex flex-col gap-3">
+      <h2 className="text-lg font-semibold">Harvest &amp; burn <span className="text-muted font-normal">(runs the real engine)</span></h2>
+      <p className="text-sm text-muted leading-relaxed">
         Trigger the same GitHub Actions workflow that runs in production. It harvests the withheld
         fees, burns 2/3 and sends 1/3 to the dev wallet — the real endgame.sh, not a simulation.
         It may take ~30–60s to start, and if there are no withheld fees to collect right now, the
@@ -41,20 +41,20 @@ export function HarvestButton() {
       </p>
       <button
         onClick={harvest} disabled={loading}
-        className="self-start rounded-lg bg-amber-500 px-4 py-2 font-semibold text-black disabled:opacity-40"
+        className="self-start rounded-lg bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-hover transition-colors disabled:opacity-40"
       >
         {loading ? 'Harvesting…' : 'Harvest now'}
       </button>
-      {status && <p className="text-sm text-neutral-500">{status}</p>}
+      {status && <p className="text-sm text-muted">{status}</p>}
       {runUrl && (
-        <a className="text-sm underline" href={runUrl} target="_blank" rel="noreferrer">View the run on GitHub Actions</a>
+        <a className="text-sm text-accent underline" href={runUrl} target="_blank" rel="noreferrer">View the run on GitHub Actions</a>
       )}
       {done && (
-        <p className="text-sm text-green-700">
+        <p className="text-sm text-green-400">
           Harvest run {done === 'success' ? 'succeeded' : `finished: ${done}`}. The live mint stats above refresh automatically.
         </p>
       )}
-      {error && <p className="text-sm text-red-600 break-all">{error}</p>}
+      {error && <p className="text-sm text-red-400 break-all">{error}</p>}
     </section>
   )
 }
