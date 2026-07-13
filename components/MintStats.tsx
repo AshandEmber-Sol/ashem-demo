@@ -4,10 +4,15 @@ import { useConnection } from '@solana/wallet-adapter-react'
 import { PublicKey } from '@solana/web3.js'
 import { getMint, getTransferFeeConfig, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token'
 
-const MINT = new PublicKey(process.env.NEXT_PUBLIC_ASHEM_MINT!)
 const START = 1_000_000_000
 const FLOOR = 300_000_000
 const DECIMALS = 9
+
+function getMintPublicKey() {
+  const addr = process.env.NEXT_PUBLIC_ASHEM_MINT
+  if (!addr) return null
+  return new PublicKey(addr)
+}
 
 function fmt(n: number) {
   return n.toLocaleString('en-US', { maximumFractionDigits: 0 })
@@ -20,8 +25,13 @@ export function MintStats() {
   const [err, setErr] = useState<string | null>(null)
 
   const load = useCallback(async () => {
+    const mintKey = getMintPublicKey()
+    if (!mintKey) {
+      setErr('NEXT_PUBLIC_ASHEM_MINT is not configured')
+      return
+    }
     try {
-      const mint = await getMint(connection, MINT, 'confirmed', TOKEN_2022_PROGRAM_ID)
+      const mint = await getMint(connection, mintKey, 'confirmed', TOKEN_2022_PROGRAM_ID)
       setSupply(Number(mint.supply) / 10 ** DECIMALS)
       const fee = getTransferFeeConfig(mint)
       setFeeBps(fee ? fee.newerTransferFee.transferFeeBasisPoints : 0)
