@@ -31,7 +31,7 @@ export function Navbar() {
                 src="/mascot-round.png"
                 alt="Ash & Ember mascot"
                 className="h-9 w-9 crack-glow"
-                style={{ filter: 'drop-shadow(0 0 10px rgba(234,88,12,0.5))' }}
+                style={{ filter: 'drop-shadow(0 0 12px rgba(234,88,12,0.65)) drop-shadow(0 0 4px rgba(251,191,36,0.3))' }}
               />
             </div>
             <div className="flex flex-col leading-tight">
@@ -152,27 +152,45 @@ export function Navbar() {
           </svg>
         </button>
 
-        {/* Hero banner image */}
-        <div className="relative w-full h-52 overflow-hidden">
-          <img
-            src="/ash-ember-banner.png"
-            alt="Ash & Ember — volcanic creature sitting on glowing lava"
-            className="w-full h-full object-cover"
-            style={{ objectPosition: 'center 30%' }}
-          />
-          {/* Gradient fade */}
+        {/* Hero area — transparent creature over dark gradient */}
+        <div
+          className="relative w-full overflow-hidden"
+          style={{
+            height: 200,
+            background: 'linear-gradient(150deg, #1a0e07 0%, #0e0804 100%)',
+            borderBottom: '1px solid rgba(234,88,12,0.15)',
+          }}
+        >
+          {/* Ember glow pool under creature */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(14,12,10,0.98) 100%)',
+              background:
+                'radial-gradient(ellipse 70% 50% at 70% 115%, rgba(234,88,12,0.4) 0%, rgba(251,191,36,0.1) 40%, transparent 65%)',
             }}
           />
-          <div className="absolute bottom-4 left-6">
+          {/* Creature — right-anchored, overflows bottom */}
+          <img
+            src="/ash-ember-nobg.png"
+            alt="Ash & Ember — volcanic creature sitting on glowing lava"
+            className="absolute crack-glow"
+            style={{
+              right: '-4%',
+              bottom: '-15%',
+              height: '130%',
+              width: 'auto',
+              filter:
+                'drop-shadow(0 0 24px rgba(234,88,12,0.55)) drop-shadow(0 12px 24px rgba(0,0,0,0.8))',
+            }}
+          />
+          {/* Left text over dark area */}
+          <div className="absolute bottom-4 left-6" style={{ zIndex: 2 }}>
             <h2 className="text-2xl font-bold">
               <span className="text-ember">ASH</span>
               <span className="text-muted mx-1">&amp;</span>
               <span style={{ color: 'var(--glow)' }}>EMBER</span>
             </h2>
+            <p className="mono text-xs mt-0.5" style={{ color: 'rgba(234,88,12,0.6)' }}>$ASHEM · Solana Devnet</p>
           </div>
         </div>
 
@@ -232,12 +250,12 @@ export function Navbar() {
           {/* Mascot standing + caption */}
           <div className="flex items-end gap-4 mt-2">
             <img
-              src="/mascot-standing.jpg"
+              src="/mascot-standing.png"
               alt="Ash mascot — full body standing"
-              className="h-28 w-28 rounded-xl object-cover flex-shrink-0"
+              className="h-28 flex-shrink-0 mascot-float"
               style={{
-                filter: 'drop-shadow(0 0 16px rgba(234,88,12,0.5))',
-                border: '1px solid rgba(234,88,12,0.2)',
+                width: 'auto',
+                filter: 'drop-shadow(0 0 18px rgba(234,88,12,0.6)) drop-shadow(0 4px 12px rgba(0,0,0,0.7))',
               }}
             />
             <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.65)' }}>

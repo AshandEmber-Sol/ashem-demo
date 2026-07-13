@@ -17,37 +17,40 @@ export function MascotCard() {
 
         {/* ── Left: character portrait ── */}
         <div
-          className="relative flex-shrink-0 flex items-center justify-center sm:w-52"
+          className="relative flex-shrink-0 flex items-end justify-center sm:w-52"
           style={{
-            background: 'linear-gradient(135deg, #f5f0e8 0%, #ede8de 50%, #e8e2d6 100%)',
-            minHeight: 200,
+            background: 'linear-gradient(160deg, #1a100a 0%, #110c08 100%)',
+            minHeight: 220,
             borderRight: '1px solid rgba(234,88,12,0.15)',
+            overflow: 'hidden',
           }}
         >
-          {/* Corner lava glow */}
+          {/* Radial ember glow behind mascot */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse at 50% 105%, rgba(234,88,12,0.18) 0%, transparent 65%)',
+                'radial-gradient(ellipse 80% 60% at 50% 85%, rgba(234,88,12,0.22) 0%, rgba(251,191,36,0.06) 45%, transparent 70%)',
             }}
           />
 
+          {/* Transparent mascot — floats over dark bg */}
           <img
-            src="/mascot-standing.jpg"
+            src="/mascot-standing.png"
             alt="Ash — full-body standing chibi volcanic creature with glowing orange lava cracks and a flame on its head"
-            className="relative z-10"
+            className="relative z-10 mascot-float"
             style={{
-              height: 168,
+              height: 196,
               width: 'auto',
-              filter: 'drop-shadow(0 4px 12px rgba(234,88,12,0.35))',
+              filter: 'drop-shadow(0 0 18px rgba(234,88,12,0.55)) drop-shadow(0 8px 20px rgba(0,0,0,0.8))',
+              marginBottom: '-4px',
             }}
           />
 
           {/* Card serial stamp bottom-left */}
           <div
             className="absolute bottom-2 left-3 mono text-xs font-bold"
-            style={{ color: 'rgba(120,80,40,0.4)', letterSpacing: '0.08em' }}
+            style={{ color: 'rgba(234,88,12,0.3)', letterSpacing: '0.08em' }}
           >
             #001
           </div>
