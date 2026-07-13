@@ -179,13 +179,12 @@ export function TransferForm() {
         {/* Running mascot */}
         <div className="flex items-center gap-3 mt-1">
           <img
-            src="/mascot-standing.jpg"
+            src="/mascot-standing.png"
             alt="Ash mascot carrying tokens"
-            className="h-12 w-12 rounded-lg object-cover flex-shrink-0"
+            className="h-14 flex-shrink-0"
             style={{
-              filter: 'drop-shadow(0 0 8px rgba(234,88,12,0.4))',
-              border: '1px solid rgba(234,88,12,0.15)',
-              animation: 'mascotRun 0.6s ease-in-out infinite alternate',
+              width: 'auto',
+              filter: 'drop-shadow(0 0 10px rgba(234,88,12,0.5)) drop-shadow(0 4px 10px rgba(0,0,0,0.7))',
             }}
           />
           <p className="text-xs leading-relaxed" style={{ color: 'rgba(240,236,228,0.55)' }}>
@@ -277,12 +276,7 @@ export function TransferForm() {
         </div>
       )}
 
-      <style>{`
-        @keyframes mascotRun {
-          0% { transform: translateY(0) rotate(-2deg); }
-          100% { transform: translateY(-3px) rotate(2deg); }
-        }
-      `}</style>
+
     </section>
   )
 }
