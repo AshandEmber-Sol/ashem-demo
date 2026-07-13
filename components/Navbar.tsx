@@ -169,16 +169,18 @@ export function Navbar() {
                 'radial-gradient(ellipse 70% 50% at 70% 115%, rgba(234,88,12,0.4) 0%, rgba(251,191,36,0.1) 40%, transparent 65%)',
             }}
           />
-          {/* Creature — right-anchored, overflows bottom */}
+          {/* Creature — covers the full hero area like a background, anchored bottom-right */}
           <img
             src="/ash-ember-nobg.png"
             alt="Ash & Ember — volcanic creature sitting on glowing lava"
             className="absolute crack-glow"
             style={{
-              right: '-4%',
-              bottom: '-15%',
-              height: '130%',
-              width: 'auto',
+              right: 0,
+              bottom: 0,
+              width: '65%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: 'right bottom',
               filter:
                 'drop-shadow(0 0 24px rgba(234,88,12,0.55)) drop-shadow(0 12px 24px rgba(0,0,0,0.8))',
             }}
