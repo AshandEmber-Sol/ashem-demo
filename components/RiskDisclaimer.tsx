@@ -145,27 +145,15 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
           <div className="p-8 flex flex-col gap-6">
             {/* Logo + mascot header */}
             <div className="flex flex-col items-center gap-3">
-              <div className="relative flex items-center justify-center" style={{ width: 88, height: 88 }}>
-                {/* Flame glow ring — fixed to container center */}
-                <div
-                  className="absolute inset-0 rounded-full pointer-events-none"
-                  style={{
-                    background: 'radial-gradient(circle, rgba(234,88,12,0.28) 0%, transparent 70%)',
-                    animation: 'emberPulse 2.4s ease-in-out infinite',
-                  }}
-                />
-                <img
-                  src="/mascot-round.png"
-                  alt="Ash mascot"
-                  className="relative crack-glow"
-                  style={{
-                    height: 80,
-                    width: 'auto',
-                    marginLeft: '-10px',
-                    filter: 'drop-shadow(0 0 20px rgba(234,88,12,0.6))',
-                  }}
-                />
-              </div>
+              <img
+                src="/mascot-round.png"
+                alt="Ash mascot"
+                className="crack-glow"
+                style={{
+                  height: 88,
+                  width: 'auto',
+                }}
+              />
               <div className="text-center">
                 <h1 id="disclaimer-title" className="text-2xl font-bold tracking-tight">
                   <span className="text-ember">ASH</span>
