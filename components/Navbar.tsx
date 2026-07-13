@@ -48,9 +48,9 @@ export function Navbar() {
           <div
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full"
             style={{
-              background: 'rgba(22,17,13,0.9)',
-              border: '1px solid rgba(234,88,12,0.2)',
-              boxShadow: '0 0 12px rgba(234,88,12,0.08)',
+              background: 'rgba(28,33,43,0.92)',
+              border: '1px solid rgba(159,176,201,0.18)',
+              boxShadow: '0 0 12px rgba(0,0,0,0.35)',
             }}
           >
             <div
@@ -67,8 +67,8 @@ export function Navbar() {
             <span
               className="text-xs px-1.5 py-0.5 rounded font-semibold"
               style={{
-                background: 'rgba(234,88,12,0.18)',
-                color: 'var(--accent)',
+                background: 'rgba(159,176,201,0.15)',
+                color: '#9fb0c9',
                 fontSize: '0.65rem',
                 letterSpacing: '0.06em',
               }}

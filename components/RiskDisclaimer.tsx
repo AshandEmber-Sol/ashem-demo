@@ -71,7 +71,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
       <div
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{
-          background: 'linear-gradient(to top, rgba(234,88,12,0.18), transparent)',
+          background: 'linear-gradient(to top, rgba(159,176,201,0.18), transparent)',
         }}
       />
 
@@ -106,7 +106,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
         <div
           className="absolute -inset-px rounded-2xl pointer-events-none"
           style={{
-            background: 'linear-gradient(135deg, rgba(234,88,12,0.7), rgba(251,191,36,0.4), rgba(220,38,38,0.6), rgba(234,88,12,0.7))',
+            background: 'linear-gradient(135deg, rgba(159,176,201,0.7), rgba(159,176,201,0.4), rgba(220,38,38,0.6), rgba(159,176,201,0.7))',
             borderRadius: '1rem',
             padding: '1px',
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
@@ -119,8 +119,8 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
           className="absolute -inset-px rounded-2xl pointer-events-none"
           style={{
             borderRadius: '1rem',
-            boxShadow: '0 0 24px rgba(234,88,12,0.55), 0 0 60px rgba(234,88,12,0.2), inset 0 0 30px rgba(234,88,12,0.05)',
-            border: '1px solid rgba(234,88,12,0.5)',
+            boxShadow: '0 0 24px rgba(159,176,201,0.55), 0 0 60px rgba(159,176,201,0.2), inset 0 0 30px rgba(159,176,201,0.05)',
+            border: '1px solid rgba(159,176,201,0.5)',
             animation: 'borderPulse 2.5s ease-in-out infinite',
           }}
         />
@@ -130,15 +130,15 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
           className="relative rounded-2xl overflow-hidden"
           style={{
             background: 'linear-gradient(145deg, #1a100a 0%, #130d09 40%, #0e0a07 100%)',
-            border: '1px solid rgba(234,88,12,0.25)',
+            border: '1px solid rgba(159,176,201,0.25)',
           }}
         >
           {/* Top crack texture accent */}
           <div
             className="h-1 w-full"
             style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(234,88,12,0.6) 30%, rgba(251,191,36,0.5) 50%, rgba(234,88,12,0.6) 70%, transparent 100%)',
-              boxShadow: '0 0 12px rgba(234,88,12,0.5)',
+              background: 'linear-gradient(90deg, transparent 0%, rgba(159,176,201,0.6) 30%, rgba(159,176,201,0.5) 50%, rgba(159,176,201,0.6) 70%, transparent 100%)',
+              boxShadow: '0 0 12px rgba(159,176,201,0.5)',
             }}
           />
 
@@ -195,8 +195,8 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
             {/* CTA Button */}
             <button
               onClick={handleAck}
-              className="btn-fire btn-ember-pulse w-full rounded-xl py-4 text-base relative overflow-hidden"
-              style={{ letterSpacing: '0.1em' }}
+              className="font-semibold w-full rounded-xl py-4 text-base relative overflow-hidden"
+              style={{ letterSpacing: '0.1em', background: 'rgba(159,176,201,0.12)', border: '1px solid rgba(159,176,201,0.32)', color: '#e7ebf1' }}
             >
               {/* Inner shimmer */}
               <div
@@ -218,7 +218,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
           <div
             className="h-px w-full"
             style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(234,88,12,0.3) 50%, transparent 100%)',
+              background: 'linear-gradient(90deg, transparent 0%, rgba(159,176,201,0.3) 50%, transparent 100%)',
             }}
           />
         </div>
@@ -226,8 +226,8 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
 
       <style>{`
         @keyframes borderPulse {
-          0%, 100% { box-shadow: 0 0 24px rgba(234,88,12,0.55), 0 0 60px rgba(234,88,12,0.2), inset 0 0 30px rgba(234,88,12,0.05); }
-          50% { box-shadow: 0 0 40px rgba(234,88,12,0.85), 0 0 90px rgba(234,88,12,0.35), inset 0 0 40px rgba(234,88,12,0.08); }
+          0%, 100% { box-shadow: 0 0 24px rgba(159,176,201,0.55), 0 0 60px rgba(159,176,201,0.2), inset 0 0 30px rgba(159,176,201,0.05); }
+          50% { box-shadow: 0 0 40px rgba(159,176,201,0.85), 0 0 90px rgba(159,176,201,0.35), inset 0 0 40px rgba(159,176,201,0.08); }
         }
         @keyframes ashRise {
           0% { transform: translateY(0) translateX(0); opacity: 0.35; }
