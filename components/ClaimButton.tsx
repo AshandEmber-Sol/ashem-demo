@@ -68,11 +68,9 @@ export function ClaimButton() {
           <img
             src="/mascot-round.png"
             alt="Round Ash mascot with orange lava cracks"
-            className="h-20 w-20 mascot-float crack-glow"
+            className="h-20 w-auto crack-glow"
             style={{
               filter: 'drop-shadow(0 0 14px rgba(234,88,12,0.55))',
-              transition: 'transform 0.2s ease',
-              transform: showTooltip ? 'scale(1.08)' : 'scale(1)',
             }}
           />
 
