@@ -161,6 +161,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
                   style={{
                     height: 80,
                     width: 'auto',
+                    marginLeft: '-10px',
                     filter: 'drop-shadow(0 0 20px rgba(234,88,12,0.6))',
                   }}
                 />
