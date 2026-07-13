@@ -1,0 +1,271 @@
+'use client'
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
+
+const WalletMultiButton = dynamic(
+  () => import('@solana/wallet-adapter-react-ui').then((m) => m.WalletMultiButton),
+  { ssr: false }
+)
+
+export function Navbar() {
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  return (
+    <>
+      {/* ── Navbar ── */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{
+          background: 'rgba(8,8,8,0.85)',
+          backdropFilter: 'blur(24px) saturate(0.7)',
+          borderBottom: '1px solid rgba(234,88,12,0.15)',
+          boxShadow: '0 4px 32px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(234,88,12,0.08)',
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+
+          {/* Left – Logo */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="relative">
+              <img
+                src="/mascot-round.png"
+                alt="Ash & Ember mascot"
+                className="h-9 w-9 crack-glow"
+                style={{ filter: 'drop-shadow(0 0 10px rgba(234,88,12,0.5))' }}
+              />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="font-bold text-sm tracking-tight">
+                <span className="text-ember">ASH</span>
+                <span className="text-muted mx-0.5">&amp;</span>
+                <span style={{ color: 'var(--glow)', textShadow: '0 0 16px rgba(251,191,36,0.5)' }}>EMBER</span>
+              </span>
+              <span className="mono text-xs" style={{ color: 'rgba(234,88,12,0.7)' }}>$ASHEM</span>
+            </div>
+          </div>
+
+          {/* Center – Network badge */}
+          <div
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full"
+            style={{
+              background: 'rgba(22,17,13,0.9)',
+              border: '1px solid rgba(234,88,12,0.2)',
+              boxShadow: '0 0 12px rgba(234,88,12,0.08)',
+            }}
+          >
+            <div
+              className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{
+                background: '#22c55e',
+                boxShadow: '0 0 6px rgba(34,197,94,0.8)',
+                animation: 'ping 2s ease-in-out infinite',
+              }}
+            />
+            <span className="mono text-xs font-medium" style={{ color: 'rgba(240,236,228,0.7)' }}>
+              Solana Devnet
+            </span>
+            <span
+              className="text-xs px-1.5 py-0.5 rounded font-semibold"
+              style={{
+                background: 'rgba(234,88,12,0.18)',
+                color: 'var(--accent)',
+                fontSize: '0.65rem',
+                letterSpacing: '0.06em',
+              }}
+            >
+              TEST NETWORK
+            </span>
+          </div>
+
+          {/* Right – Actions */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <button
+              onClick={() => setDrawerOpen(true)}
+              className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200"
+              style={{
+                background: 'rgba(234,88,12,0.1)',
+                border: '1px solid rgba(234,88,12,0.25)',
+                color: 'rgba(240,236,228,0.85)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(234,88,12,0.2)'
+                e.currentTarget.style.boxShadow = '0 0 16px rgba(234,88,12,0.25)'
+                e.currentTarget.style.borderColor = 'rgba(234,88,12,0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(234,88,12,0.1)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.borderColor = 'rgba(234,88,12,0.25)'
+              }}
+              aria-label="Open About Us panel"
+            >
+              About Us
+            </button>
+            <WalletMultiButton />
+          </div>
+        </div>
+      </header>
+
+      {/* ── About Us Drawer ── */}
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-[60]"
+        style={{
+          background: 'rgba(0,0,0,0.7)',
+          backdropFilter: 'blur(4px)',
+          opacity: drawerOpen ? 1 : 0,
+          pointerEvents: drawerOpen ? 'auto' : 'none',
+          transition: 'opacity 0.35s ease',
+        }}
+        onClick={() => setDrawerOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Drawer panel */}
+      <aside
+        role="dialog"
+        aria-label="About Ash & Ember"
+        className="fixed top-0 right-0 bottom-0 z-[70] w-full max-w-md overflow-y-auto"
+        style={{
+          background: 'linear-gradient(160deg, #12100d 0%, #0e0c0a 60%, #0a0806 100%)',
+          borderLeft: '1px solid rgba(234,88,12,0.25)',
+          boxShadow: drawerOpen ? '-20px 0 60px rgba(0,0,0,0.85), -4px 0 20px rgba(234,88,12,0.08)' : 'none',
+          transform: drawerOpen ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 0.4s cubic-bezier(0.32, 0.72, 0, 1)',
+        }}
+      >
+        {/* Close button */}
+        <button
+          onClick={() => setDrawerOpen(false)}
+          className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all"
+          style={{
+            background: 'rgba(234,88,12,0.12)',
+            border: '1px solid rgba(234,88,12,0.25)',
+            color: 'rgba(240,236,228,0.7)',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234,88,12,0.25)' }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(234,88,12,0.12)' }}
+          aria-label="Close About Us panel"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
+
+        {/* Hero banner image */}
+        <div className="relative w-full h-52 overflow-hidden">
+          <img
+            src="/ash-ember-banner.png"
+            alt="Ash & Ember — volcanic creature sitting on glowing lava"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: 'center 30%' }}
+          />
+          {/* Gradient fade */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(14,12,10,0.98) 100%)',
+            }}
+          />
+          <div className="absolute bottom-4 left-6">
+            <h2 className="text-2xl font-bold">
+              <span className="text-ember">ASH</span>
+              <span className="text-muted mx-1">&amp;</span>
+              <span style={{ color: 'var(--glow)' }}>EMBER</span>
+            </h2>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="px-6 pb-8 flex flex-col gap-6 mt-2">
+
+          {/* Mission card */}
+          <div
+            className="rounded-xl p-5 flex flex-col gap-3"
+            style={{
+              background: 'rgba(26,18,12,0.8)',
+              border: '1px solid rgba(234,88,12,0.15)',
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <div
+                className="w-1 h-6 rounded-full"
+                style={{ background: 'linear-gradient(to bottom, var(--accent), var(--glow))' }}
+              />
+              <h3 className="font-bold text-base" style={{ color: 'var(--text)' }}>Our Mission</h3>
+            </div>
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.75)' }}>
+              Ash &amp; Ember is a live technical demonstration of{' '}
+              <span className="text-ember font-semibold">Solana&apos;s Token-2022 standard</span> in action on devnet.
+              Every interaction you make here — transfers, claims, harvests — is a real on-chain transaction.
+            </p>
+          </div>
+
+          {/* Tech stack */}
+          <div className="flex flex-col gap-3">
+            <h3 className="font-bold text-sm tracking-wider uppercase" style={{ color: 'var(--muted)' }}>
+              Technical Stack
+            </h3>
+            {[
+              { label: 'Token-2022', desc: 'Native transfer fee extension — 1.5% withheld on every transfer', icon: '⚡' },
+              { label: 'Solana Devnet', desc: 'Real on-chain transactions, zero mainnet value or risk', icon: '🔗' },
+              { label: 'GitHub Actions', desc: 'Harvest workflow runs the endgame.sh script — not a simulation', icon: '⚙' },
+              { label: 'No Smart Contracts', desc: 'Interface calls Token-2022 native instructions only', icon: '🔐' },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="flex items-start gap-3 px-4 py-3 rounded-lg"
+                style={{
+                  background: 'rgba(14,10,7,0.7)',
+                  border: '1px solid rgba(234,88,12,0.1)',
+                }}
+              >
+                <span className="text-base mt-0.5 flex-shrink-0">{item.icon}</span>
+                <div>
+                  <div className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>{item.label}</div>
+                  <div className="text-xs leading-relaxed mt-0.5" style={{ color: 'rgba(240,236,228,0.6)' }}>{item.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Mascot standing + caption */}
+          <div className="flex items-end gap-4 mt-2">
+            <img
+              src="/mascot-standing.jpg"
+              alt="Ash mascot — full body standing"
+              className="h-28 w-28 rounded-xl object-cover flex-shrink-0"
+              style={{
+                filter: 'drop-shadow(0 0 16px rgba(234,88,12,0.5))',
+                border: '1px solid rgba(234,88,12,0.2)',
+              }}
+            />
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.65)' }}>
+              Born from the forge of Solana&apos;s devnet. Every crack in Ash&apos;s obsidian skin tells a story of tokens burned, fees harvested, and the chain kept honest.
+            </p>
+          </div>
+
+          {/* Disclaimer */}
+          <div
+            className="rounded-lg px-4 py-3"
+            style={{
+              background: 'rgba(220,38,38,0.08)',
+              border: '1px solid rgba(220,38,38,0.2)',
+            }}
+          >
+            <p className="text-xs leading-relaxed" style={{ color: 'rgba(248,113,113,0.85)' }}>
+              <strong>Reminder:</strong> $ASHEM tokens have zero monetary value and are strictly for demonstration purposes on Solana Devnet. Nothing here constitutes financial advice or a mainnet token offering.
+            </p>
+          </div>
+        </div>
+      </aside>
+
+      <style>{`
+        @keyframes ping {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.4); opacity: 0.7; }
+        }
+      `}</style>
+    </>
+  )
+}
