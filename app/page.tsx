@@ -1,7 +1,9 @@
 'use client'
 import { useState, useCallback } from 'react'
 import { RiskDisclaimer } from '@/components/RiskDisclaimer'
+import { HeroBanner } from '@/components/HeroBanner'
 import { MagmaTank } from '@/components/MagmaTank'
+import { MascotCard } from '@/components/MascotCard'
 import { ClaimButton } from '@/components/ClaimButton'
 import { TransferForm } from '@/components/TransferForm'
 import { HarvestButton } from '@/components/HarvestButton'
@@ -33,6 +35,9 @@ export default function Home() {
           pointerEvents: acknowledged ? 'auto' : 'none',
         }}
       >
+        {/* ── Hero Banner ── */}
+        <HeroBanner />
+
         {/* ── Section: Live On-Chain State (Magma Tank) ── */}
         <MagmaTank
           key={eruptionKey}
@@ -46,6 +51,9 @@ export default function Home() {
           <span className="text-xs text-muted font-semibold tracking-widest uppercase">Transaction Zone</span>
           <div className="flex-1 h-px" style={{ background: 'rgba(234,88,12,0.15)' }} />
         </div>
+
+        {/* ── Meet Ash character card ── */}
+        <MascotCard />
 
         {/* ── Section: Get Test Funds ── */}
         <ClaimButton />
