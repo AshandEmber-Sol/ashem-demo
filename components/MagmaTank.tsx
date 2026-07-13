@@ -199,9 +199,9 @@ export function MagmaTank({ onSupplyChange, supplyOverride }: MagmaTankProps) {
               }}
             />
 
-            {/* Floating level indicator */}
+            {/* Floating level indicator — left side */}
             <div
-              className="absolute left-full ml-3 flex items-center gap-1.5 transition-all duration-[2000ms]"
+              className="absolute right-full mr-3 flex flex-row-reverse items-center gap-1.5 transition-all duration-[2000ms]"
               style={{
                 bottom: `calc(${fillPct}% - 10px)`,
               }}
