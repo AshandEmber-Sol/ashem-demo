@@ -17,7 +17,7 @@ export function MascotCard() {
 
         {/* ── Left: character portrait ── */}
         <div
-          className="relative flex-shrink-0 flex items-end justify-center sm:w-52"
+          className="relative flex-shrink-0 flex items-center justify-center sm:w-52"
           style={{
             background: 'linear-gradient(160deg, #1a100a 0%, #110c08 100%)',
             minHeight: 220,
@@ -30,7 +30,7 @@ export function MascotCard() {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(ellipse 80% 60% at 50% 85%, rgba(234,88,12,0.22) 0%, rgba(251,191,36,0.06) 45%, transparent 70%)',
+                'radial-gradient(ellipse 80% 70% at 50% 60%, rgba(234,88,12,0.2) 0%, rgba(251,191,36,0.05) 50%, transparent 75%)',
             }}
           />
 
@@ -40,10 +40,9 @@ export function MascotCard() {
             alt="Ash — full-body standing chibi volcanic creature with glowing orange lava cracks and a flame on its head"
             className="relative z-10 mascot-float"
             style={{
-              height: 196,
+              height: 180,
               width: 'auto',
               filter: 'drop-shadow(0 0 18px rgba(234,88,12,0.55)) drop-shadow(0 8px 20px rgba(0,0,0,0.8))',
-              marginBottom: '-4px',
             }}
           />
 
