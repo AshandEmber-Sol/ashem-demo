@@ -199,28 +199,27 @@ export function MagmaTank({ onSupplyChange, supplyOverride }: MagmaTankProps) {
               }}
             />
 
-            {/* Floating level indicator — left side */}
+            {/* Fill-level readout — integrated into the tank like a gauge marker */}
             <div
-              className="absolute right-full mr-3 flex flex-row-reverse items-center gap-1.5 transition-all duration-[2000ms]"
+              className="absolute left-1/2 -translate-x-1/2 transition-all duration-[2000ms] pointer-events-none z-10"
               style={{
-                bottom: `calc(${fillPct}% - 10px)`,
+                bottom: `calc(${fillPct}% - 12px)`,
               }}
             >
               <div
-                className="w-5 h-px"
-                style={{ background: 'rgba(234,88,12,0.5)' }}
-              />
-              <div
-                className="px-2 py-1 rounded text-xs mono font-bold whitespace-nowrap"
+                className="px-1.5 py-0.5 rounded text-center mono whitespace-nowrap"
                 style={{
-                  background: 'rgba(20,12,7,0.95)',
-                  border: '1px solid rgba(234,88,12,0.4)',
-                  color: 'var(--glow)',
-                  fontSize: '0.65rem',
-                  boxShadow: '0 0 8px rgba(234,88,12,0.2)',
+                  background: 'rgba(10,7,5,0.92)',
+                  border: '1px solid rgba(251,191,36,0.5)',
+                  boxShadow: '0 0 10px rgba(0,0,0,0.7)',
                 }}
               >
-                {distancePct.toFixed(2)}% to floor
+                <div style={{ fontSize: '0.62rem', fontWeight: 700, lineHeight: 1.15, color: 'var(--glow)' }}>
+                  {distancePct.toFixed(1)}%
+                </div>
+                <div style={{ fontSize: '0.5rem', lineHeight: 1.15, color: 'rgba(240,236,228,0.5)', letterSpacing: '0.04em' }}>
+                  to floor
+                </div>
               </div>
             </div>
           </div>
