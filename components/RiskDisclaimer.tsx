@@ -67,7 +67,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
         }}
       />
 
-      {/* Ambient lava glow at bottom */}
+      {/* Ambient glow at bottom */}
       <div
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{
@@ -102,7 +102,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
           transition: 'transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        {/* Lava border glow ring */}
+        {/* Slate border glow ring */}
         <div
           className="absolute -inset-px rounded-2xl pointer-events-none"
           style={{
@@ -114,7 +114,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
             maskComposite: 'exclude',
           }}
         />
-        {/* Animated lava border */}
+        {/* Animated border */}
         <div
           className="absolute -inset-px rounded-2xl pointer-events-none"
           style={{
@@ -187,7 +187,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
               $ASHEM is a{' '}
               <strong className="text-ember">DEVNET Demo</strong>. Tokens have{' '}
               <strong className="text-red-400">ZERO mainnet value</strong>. Every action here triggers a real on-chain
-              transaction on Solana Testnet. No custom smart contracts are used; this interface interacts
+              transaction on Solana Devnet. No custom smart contracts are used; this interface interacts
               directly with{' '}
               <span className="mono text-accent">Token-2022&apos;s</span> native instructions.
             </p>
@@ -231,7 +231,7 @@ export function RiskDisclaimer({ onAcknowledge }: { onAcknowledge: () => void })
         }
         @keyframes ashRise {
           0% { transform: translateY(0) translateX(0); opacity: 0.35; }
-          100% { transform: translateY(-180px) translateX(${Math.random() > 0.5 ? '' : '-'}30px); opacity: 0; }
+          100% { transform: translateY(-180px) translateX(30px); opacity: 0; }
         }
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
