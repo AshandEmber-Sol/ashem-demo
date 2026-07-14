@@ -66,7 +66,7 @@ export function ClaimButton() {
           <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.75)' }}>
             Claim devnet SOL and $ASHEM test tokens to try the demo. These are{' '}
             <span className="text-red-400 font-semibold">zero-value devnet tokens</span> — claiming them creates
-            no allocation or expectation for mainnet.
+            no allocation, whitelist, or expectation for mainnet.
           </p>
 
           <button

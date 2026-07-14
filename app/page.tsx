@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react'
 import { RiskDisclaimer } from '@/components/RiskDisclaimer'
 import { HeroBanner } from '@/components/HeroBanner'
 import { MagmaTank } from '@/components/MagmaTank'
+import { VerifyBar } from '@/components/VerifyBar'
 import { MascotCard } from '@/components/MascotCard'
 import { ClaimButton } from '@/components/ClaimButton'
 import { TransferForm } from '@/components/TransferForm'
@@ -45,6 +46,9 @@ export default function Home() {
           supplyOverride={null}
         />
 
+        {/* ── Verify: no custom contract, inspect on GitHub / Solscan (Req 6.3) ── */}
+        <VerifyBar />
+
         {/* ── Section divider ── */}
         <div className="flex items-center gap-4">
           <div className="flex-1 h-px" style={{ background: 'rgba(234,88,12,0.15)' }} />
@@ -52,7 +56,7 @@ export default function Home() {
           <div className="flex-1 h-px" style={{ background: 'rgba(234,88,12,0.15)' }} />
         </div>
 
-        {/* ── Meet Ash character card ── */}
+        {/* ── Meet Ash ── */}
         <MascotCard />
 
         {/* ── Section: Get Test Funds ── */}
