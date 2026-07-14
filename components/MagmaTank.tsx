@@ -215,7 +215,7 @@ export function MagmaTank({ onSupplyChange, supplyOverride }: MagmaTankProps) {
                 }}
               >
                 <div style={{ fontSize: '0.62rem', fontWeight: 700, lineHeight: 1.15, color: 'var(--glow)' }}>
-                  {distancePct.toFixed(1)}%
+                  {distancePct.toFixed(2)}%
                 </div>
                 <div style={{ fontSize: '0.5rem', lineHeight: 1.15, color: 'rgba(240,236,228,0.5)', letterSpacing: '0.04em' }}>
                   to floor
