@@ -28,7 +28,7 @@ export default function Home() {
       <main
         className="max-w-3xl mx-auto px-4 sm:px-6 pb-16 flex flex-col gap-6"
         style={{
-          paddingTop: '6rem', // clear fixed navbar
+          paddingTop: '1.5rem',
           opacity: acknowledged ? 1 : 0.15,
           filter: acknowledged ? 'none' : 'blur(4px)',
           transition: 'opacity 0.8s ease, filter 0.8s ease',
@@ -78,8 +78,8 @@ export default function Home() {
             style={{ background: 'linear-gradient(90deg, transparent, rgba(234,88,12,0.2), transparent)' }}
           />
           <p className="text-xs text-muted leading-relaxed">
-            Ash &amp; Ember ($ASHEM) is a Solana Devnet demonstration of the Token-2022 standard.
-            All tokens have zero monetary value and no relationship to any mainnet asset.
+            This site is a Solana Devnet demo of the <span style={{ color: 'rgba(240,236,228,0.75)' }}>$ASHEM</span> token&apos;s
+            Token-2022 mechanics. The devnet tokens here have zero monetary value and no claim on any mainnet asset.
           </p>
           <p className="mono text-xs" style={{ color: 'rgba(234,88,12,0.4)' }}>
             Built with Token-2022 · Solana Devnet · GitHub Actions

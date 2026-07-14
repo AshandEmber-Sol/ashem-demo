@@ -7,7 +7,6 @@ export function ClaimButton() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
-  const [showTooltip, setShowTooltip] = useState(false)
 
   async function claim() {
     if (!publicKey) return
@@ -54,73 +53,13 @@ export function ClaimButton() {
       {/* Content row: mascot + description + button */}
       <div className="flex items-start gap-5">
 
-        {/* Mascot with dialog bubble */}
-        <div
-          className="relative flex-shrink-0 cursor-pointer"
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-          onFocus={() => setShowTooltip(true)}
-          onBlur={() => setShowTooltip(false)}
-          tabIndex={0}
-          role="img"
-          aria-label="Ash mascot — hover for a tip"
-        >
-          <img
-            src="/mascot-round.png"
-            alt="Round Ash mascot with orange lava cracks"
-            className="h-20 w-auto crack-glow"
-            style={{
-              filter: 'drop-shadow(0 0 14px rgba(234,88,12,0.55))',
-            }}
-          />
-
-          {/* Comic speech bubble */}
-          <div
-            className="absolute -top-2 left-[calc(100%+8px)] w-max max-w-[200px]"
-            style={{
-              opacity: showTooltip ? 1 : 0,
-              transform: showTooltip ? 'translateX(0) scale(1)' : 'translateX(-8px) scale(0.95)',
-              transition: 'opacity 0.2s ease, transform 0.2s ease',
-              pointerEvents: 'none',
-              zIndex: 10,
-            }}
-          >
-            {/* Bubble */}
-            <div
-              className="rounded-xl px-3 py-2.5 text-xs font-semibold leading-relaxed"
-              style={{
-                background: 'linear-gradient(135deg, #1a0f0a, #120c08)',
-                border: '1px solid rgba(234,88,12,0.5)',
-                color: 'var(--text)',
-                boxShadow: '0 0 16px rgba(234,88,12,0.3), 0 4px 16px rgba(0,0,0,0.6)',
-              }}
-            >
-              {/* Tail arrow */}
-              <div
-                className="absolute top-3 -left-2.5"
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderTop: '6px solid transparent',
-                  borderBottom: '6px solid transparent',
-                  borderRight: '10px solid rgba(234,88,12,0.5)',
-                }}
-              />
-              <div
-                className="absolute top-3 -left-2"
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderTop: '6px solid transparent',
-                  borderBottom: '6px solid transparent',
-                  borderRight: '10px solid #1a0f0a',
-                }}
-              />
-              <span className="text-ember">¡Claim some SOL &amp; $ASHEM</span>
-              {' '}before burning the world!
-            </div>
-          </div>
-        </div>
+        {/* Mascot */}
+        <img
+          src="/mascot-round.png"
+          alt="Round Ash mascot with orange lava cracks"
+          className="h-20 w-auto crack-glow flex-shrink-0"
+          style={{ filter: 'drop-shadow(0 0 14px rgba(234,88,12,0.55))' }}
+        />
 
         {/* Right: description + button */}
         <div className="flex-1 flex flex-col gap-3">

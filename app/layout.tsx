@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
+import { TestnetBanner } from '@/components/TestnetBanner'
 import { Navbar } from '@/components/Navbar'
 
 const spaceGrotesk = Space_Grotesk({
@@ -32,7 +33,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`bg-bg ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen font-sans">
         <Providers>
-          <Navbar />
+          <div className="sticky top-0 z-50">
+            <TestnetBanner />
+            <Navbar />
+          </div>
           {children}
         </Providers>
       </body>

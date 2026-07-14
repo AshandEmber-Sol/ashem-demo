@@ -14,7 +14,7 @@ export function Navbar() {
     <>
       {/* ── Navbar ── */}
       <header
-        className="fixed top-0 left-0 right-0 z-50"
+        className="w-full"
         style={{
           background: 'rgba(8,8,8,0.85)',
           backdropFilter: 'blur(24px) saturate(0.7)',
@@ -215,9 +215,12 @@ export function Navbar() {
               <h3 className="font-bold text-base" style={{ color: 'var(--text)' }}>Our Mission</h3>
             </div>
             <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.75)' }}>
-              Ash &amp; Ember is a live technical demonstration of{' '}
-              <span className="text-ember font-semibold">Solana&apos;s Token-2022 standard</span> in action on devnet.
-              Every interaction you make here — transfers, claims, harvests — is a real on-chain transaction.
+              <span className="text-ember font-semibold">$ASHEM</span> is a memecoin built on{' '}
+              <span className="text-ember font-semibold">Solana&apos;s Token-2022 standard</span>, with an automated,
+              on-chain burn-and-fee mechanism. This site is its{' '}
+              <strong style={{ color: 'var(--text)' }}>devnet demo</strong> — a way to verify that mechanism
+              yourself, on-chain and ahead of mainnet, without taking our word for it. Every interaction here —
+              transfers, claims, harvests — is a real transaction on Solana Devnet.
             </p>
           </div>
 
@@ -274,7 +277,7 @@ export function Navbar() {
             }}
           >
             <p className="text-xs leading-relaxed" style={{ color: 'rgba(248,113,113,0.85)' }}>
-              <strong>Reminder:</strong> $ASHEM tokens have zero monetary value and are strictly for demonstration purposes on Solana Devnet. Nothing here constitutes financial advice or a mainnet token offering.
+              <strong>Reminder:</strong> The $ASHEM tokens in this demo are devnet-only and have zero monetary value. Nothing here is financial advice, an allocation, or a mainnet token offering.
             </p>
           </div>
         </div>
