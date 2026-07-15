@@ -83,7 +83,7 @@ export default function Home() {
             style={{ background: 'linear-gradient(90deg, transparent, rgba(234,88,12,0.2), transparent)' }}
           />
           <p className="text-xs text-muted leading-relaxed">
-            This site is a Solana Devnet demo of the <span style={{ color: 'rgba(240,236,228,0.75)' }}>$ASHEM</span> token&apos;s
+            This site is a Solana Devnet demo of the <span style={{ color: 'rgba(240,236,228,0.75)' }}>$ASHEM</span>{' '}token&apos;s
             Token-2022 mechanics. The devnet tokens here have zero monetary value and no claim on any mainnet asset.
           </p>
 

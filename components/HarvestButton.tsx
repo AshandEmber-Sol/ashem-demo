@@ -170,7 +170,7 @@ export function HarvestButton({ onErupt }: HarvestButtonProps) {
       {/* Description */}
       <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.7)' }}>
         Triggers the same workflow that runs in production: collects withheld fees from the Token-2022 vault,{' '}
-        <span className="text-red-400 font-semibold">burns 2/3</span> to a null address, and sends 1/3 to the dev wallet.
+        <span className="text-red-400 font-semibold">burns 2/3</span>{' '}to a null address, and sends 1/3 to the dev wallet.
         Takes ~30–60 seconds. If no fees are withheld, supply won&apos;t change.
       </p>
 

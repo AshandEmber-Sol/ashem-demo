@@ -34,7 +34,7 @@ export function Navbar() {
                 style={{ filter: 'drop-shadow(0 0 12px rgba(234,88,12,0.65)) drop-shadow(0 0 4px rgba(251,191,36,0.3))' }}
               />
             </div>
-            <div className="flex flex-col leading-tight">
+            <div className="hidden sm:flex flex-col leading-tight">
               <span className="font-bold text-sm tracking-tight">
                 <span className="text-ember">ASH</span>
                 <span className="text-muted mx-0.5">&amp;</span>
