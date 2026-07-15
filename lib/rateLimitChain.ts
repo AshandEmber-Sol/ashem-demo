@@ -1,7 +1,7 @@
 import { Connection, PublicKey } from '@solana/web3.js'
 
 // Rate-limit on-chain: el historial del destinatario ES el registro.
-// true si el dispensador ya envió a `recipient` dentro de la ventana.
+// true if the dispenser has already sent to `recipient` within the window.
 export async function alreadyClaimed(
   connection: Connection,
   dispenser: PublicKey,
