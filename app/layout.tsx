@@ -5,6 +5,7 @@ import { Providers } from './providers'
 import { TestnetBanner } from '@/components/TestnetBanner'
 import { Navbar } from '@/components/Navbar'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </Providers>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
