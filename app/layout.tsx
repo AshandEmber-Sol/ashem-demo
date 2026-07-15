@@ -4,6 +4,7 @@ import './globals.css'
 import { Providers } from './providers'
 import { TestnetBanner } from '@/components/TestnetBanner'
 import { Navbar } from '@/components/Navbar'
+import { Analytics } from '@vercel/analytics/next'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   )
