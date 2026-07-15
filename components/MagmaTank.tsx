@@ -276,7 +276,7 @@ export function MagmaTank({ onSupplyChange, supplyOverride }: MagmaTankProps) {
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between items-center">
               <span className="text-xs text-muted">Start: {fmt(START)}</span>
-              <span className="text-xs" style={{ color: 'var(--accent)' }}>{(100 - fillPct).toFixed(2)}% burned</span>
+              <span className="text-xs" style={{ color: 'var(--accent)' }}>{(100 - fillPct).toFixed(2)}% burned <span style={{ color: 'var(--muted)' }}>&middot; {fillPct.toFixed(2)}% remaining</span></span>
             </div>
             <div
               className="h-2 w-full rounded-full overflow-hidden"
