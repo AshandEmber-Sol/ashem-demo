@@ -10,6 +10,7 @@ import {
   getTransferFeeConfig,
   TOKEN_2022_PROGRAM_ID,
 } from '@solana/spl-token'
+import { ExternalLink } from './ExternalLink'
 
 const MINT_ADDRESS = process.env.NEXT_PUBLIC_ASHEM_MINT
 const MINT = MINT_ADDRESS ? new PublicKey(MINT_ADDRESS) : null
@@ -246,9 +247,9 @@ export function TransferForm() {
             <span className="text-green-400">
               Recipient received: <strong className="mono">{result.received.toLocaleString()}</strong> $ASHEM
             </span>
-            <a className="text-accent text-xs underline underline-offset-2" href={result.solscan} target="_blank" rel="noreferrer">
-              View on Solscan &rarr;
-            </a>
+            <ExternalLink site="solscan" href={result.solscan} className="text-accent text-xs font-medium">
+              View on Solscan
+            </ExternalLink>
           </div>
         </div>
       )}

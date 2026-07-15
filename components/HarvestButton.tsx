@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import { ExternalLink } from './ExternalLink'
 
 type TerminalStage = 'idle' | 'queued' | 'running' | 'harvesting' | 'burning' | 'success' | 'failed'
 
@@ -341,14 +342,9 @@ export function HarvestButton({ onErupt }: HarvestButtonProps) {
 
       {/* Links & errors */}
       {runUrl && (
-        <a
-          className="text-sm text-accent underline underline-offset-2 self-start"
-          href={runUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View the run on GitHub Actions &rarr;
-        </a>
+        <ExternalLink site="github" href={runUrl} className="text-sm text-accent self-start">
+          View the run on GitHub Actions
+        </ExternalLink>
       )}
       {error && (
         <p className="text-red-400 text-sm mono px-3 py-2 rounded-lg" style={{ background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)' }}>

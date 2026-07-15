@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { ExternalLink } from './ExternalLink'
 
 export function ClaimButton() {
   const { publicKey } = useWallet()
@@ -108,14 +109,9 @@ export function ClaimButton() {
               <strong className="mono">{result.ashem}</strong> $ASHEM
               <span className="text-muted text-xs"> (after 1.5% fee)</span>
             </span>
-            <a
-              className="text-accent text-xs underline underline-offset-2"
-              href={result.solscan}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on Solscan &rarr;
-            </a>
+            <ExternalLink site="solscan" href={result.solscan} className="text-accent text-xs font-medium">
+              View on Solscan
+            </ExternalLink>
           </div>
         </div>
       )}
