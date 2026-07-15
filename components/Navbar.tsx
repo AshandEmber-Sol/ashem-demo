@@ -7,8 +7,10 @@ const WalletMultiButton = dynamic(
   { ssr: false }
 )
 
+type DrawerView = 'about' | 'howto' | null
+
 export function Navbar() {
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerView, setDrawerView] = useState<DrawerView>(null)
 
   return (
     <>
@@ -80,8 +82,35 @@ export function Navbar() {
           {/* Right – Actions */}
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
-              onClick={() => setDrawerOpen(true)}
-              className="px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200"
+              onClick={() => setDrawerView('howto')}
+              className="flex items-center px-2.5 sm:px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200"
+              style={{
+                background: 'rgba(234,88,12,0.1)',
+                border: '1px solid rgba(234,88,12,0.25)',
+                color: 'rgba(240,236,228,0.85)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(234,88,12,0.2)'
+                e.currentTarget.style.boxShadow = '0 0 16px rgba(234,88,12,0.25)'
+                e.currentTarget.style.borderColor = 'rgba(234,88,12,0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(234,88,12,0.1)'
+                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.borderColor = 'rgba(234,88,12,0.25)'
+              }}
+              aria-label="Open How to Use panel"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              <span className="hidden sm:inline ml-1.5">How to Use</span>
+            </button>
+            <button
+              onClick={() => setDrawerView('about')}
+              className="flex items-center px-2.5 sm:px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200"
               style={{
                 background: 'rgba(234,88,12,0.1)',
                 border: '1px solid rgba(234,88,12,0.25)',
@@ -99,44 +128,49 @@ export function Navbar() {
               }}
               aria-label="Open About Us panel"
             >
-              About Us
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12.01" y2="8" />
+              </svg>
+              <span className="hidden sm:inline ml-1.5">About Us</span>
             </button>
             <WalletMultiButton />
           </div>
         </div>
       </header>
 
-      {/* ── About Us Drawer ── */}
+      {/* ── Drawer (About Us / How to Use) ── */}
       {/* Backdrop */}
       <div
         className="fixed inset-0 z-[60]"
         style={{
           background: 'rgba(0,0,0,0.7)',
           backdropFilter: 'blur(4px)',
-          opacity: drawerOpen ? 1 : 0,
-          pointerEvents: drawerOpen ? 'auto' : 'none',
+          opacity: drawerView ? 1 : 0,
+          pointerEvents: drawerView ? 'auto' : 'none',
           transition: 'opacity 0.35s ease',
         }}
-        onClick={() => setDrawerOpen(false)}
+        onClick={() => setDrawerView(null)}
         aria-hidden="true"
       />
 
       {/* Drawer panel */}
       <aside
         role="dialog"
-        aria-label="About Ash & Ember"
+        aria-label={drawerView === 'howto' ? 'How to Use This Demo' : 'About Ash & Ember'}
         className="fixed top-0 right-0 bottom-0 z-[70] w-full max-w-md overflow-y-auto"
         style={{
           background: 'linear-gradient(160deg, #12100d 0%, #0e0c0a 60%, #0a0806 100%)',
           borderLeft: '1px solid rgba(234,88,12,0.25)',
-          boxShadow: drawerOpen ? '-20px 0 60px rgba(0,0,0,0.85), -4px 0 20px rgba(234,88,12,0.08)' : 'none',
-          transform: drawerOpen ? 'translateX(0)' : 'translateX(100%)',
+          boxShadow: drawerView ? '-20px 0 60px rgba(0,0,0,0.85), -4px 0 20px rgba(234,88,12,0.08)' : 'none',
+          transform: drawerView ? 'translateX(0)' : 'translateX(100%)',
           transition: 'transform 0.4s cubic-bezier(0.32, 0.72, 0, 1)',
         }}
       >
         {/* Close button */}
         <button
-          onClick={() => setDrawerOpen(false)}
+          onClick={() => setDrawerView(null)}
           className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all"
           style={{
             background: 'rgba(234,88,12,0.12)',
@@ -145,7 +179,7 @@ export function Navbar() {
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(234,88,12,0.25)' }}
           onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(234,88,12,0.12)' }}
-          aria-label="Close About Us panel"
+          aria-label="Close panel"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -187,99 +221,153 @@ export function Navbar() {
           />
           {/* Left text over dark area */}
           <div className="absolute bottom-4 left-6" style={{ zIndex: 2 }}>
-            <h2 className="text-2xl font-bold">
-              <span className="text-ember">ASH</span>
-              <span className="text-muted mx-1">&amp;</span>
-              <span style={{ color: 'var(--glow)' }}>EMBER</span>
-            </h2>
-            <p className="mono text-xs mt-0.5" style={{ color: 'rgba(234,88,12,0.6)' }}>$ASHEM · Solana Devnet</p>
+            {drawerView === 'howto' ? (
+              <>
+                <h2 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>How to Use</h2>
+                <p className="mono text-xs mt-0.5" style={{ color: 'rgba(234,88,12,0.6)' }}>Getting started, step by step</p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold">
+                  <span className="text-ember">ASH</span>
+                  <span className="text-muted mx-1">&amp;</span>
+                  <span style={{ color: 'var(--glow)' }}>EMBER</span>
+                </h2>
+                <p className="mono text-xs mt-0.5" style={{ color: 'rgba(234,88,12,0.6)' }}>$ASHEM · Solana Devnet</p>
+              </>
+            )}
           </div>
         </div>
 
         {/* Content */}
         <div className="px-6 pb-8 flex flex-col gap-6 mt-2">
+          {drawerView === 'howto' ? (
+            <>
+              {/* How to Use — numbered steps */}
+              <div className="flex flex-col gap-3">
+                <h3 className="font-bold text-sm tracking-wider uppercase" style={{ color: 'var(--muted)' }}>
+                  Before You Start
+                </h3>
+                {[
+                  { n: 1, title: 'Get a wallet', desc: 'Install Phantom (phantom.app) or Solflare (solflare.com) — free browser extensions, a couple minutes to set up.' },
+                  { n: 2, title: 'Switch it to Devnet', desc: 'Wallets default to Mainnet. In Phantom: Settings → Developer Settings → turn on Testnet Mode → pick Devnet. In Solflare: click the network name at the top → pick Devnet. (Exact menu wording can vary by version.)' },
+                  { n: 3, title: 'Connect', desc: 'Hit "Select Wallet" in the top bar and approve the connection.' },
+                  { n: 4, title: 'Claim test funds', desc: 'Get free devnet SOL + $ASHEM below. One claim per wallet every 24h.' },
+                  { n: 5, title: 'Try the mechanics', desc: 'Send $ASHEM and watch the 1.5% fee get withheld live, or trigger a real harvest and watch the supply drop on-chain.' },
+                ].map((step) => (
+                  <div
+                    key={step.n}
+                    className="flex items-start gap-3 px-4 py-3 rounded-lg"
+                    style={{ background: 'rgba(14,10,7,0.7)', border: '1px solid rgba(234,88,12,0.1)' }}
+                  >
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mono text-xs font-bold"
+                      style={{ background: 'rgba(234,88,12,0.15)', color: 'var(--accent)' }}
+                    >
+                      {step.n}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{step.title}</div>
+                      <div className="text-xs leading-relaxed mt-0.5" style={{ color: 'rgba(240,236,228,0.6)' }}>{step.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-          {/* Mission card */}
-          <div
-            className="rounded-xl p-5 flex flex-col gap-3"
-            style={{
-              background: 'rgba(26,18,12,0.8)',
-              border: '1px solid rgba(234,88,12,0.15)',
-            }}
-          >
-            <div className="flex items-center gap-2">
               <div
-                className="w-1 h-6 rounded-full"
-                style={{ background: 'linear-gradient(to bottom, var(--accent), var(--glow))' }}
-              />
-              <h3 className="font-bold text-base" style={{ color: 'var(--text)' }}>Our Mission</h3>
-            </div>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.75)' }}>
-              <span className="text-ember font-semibold">$ASHEM</span> is a memecoin built on{' '}
-              <span className="text-ember font-semibold">Solana&apos;s Token-2022 standard</span>, with an automated,
-              on-chain burn-and-fee mechanism. This site is its{' '}
-              <strong style={{ color: 'var(--text)' }}>devnet demo</strong> — a way to verify that mechanism
-              yourself, on-chain and ahead of mainnet, without taking our word for it. Every interaction here —
-              transfers, claims, harvests — is a real transaction on Solana Devnet.
-            </p>
-          </div>
-
-          {/* Tech stack */}
-          <div className="flex flex-col gap-3">
-            <h3 className="font-bold text-sm tracking-wider uppercase" style={{ color: 'var(--muted)' }}>
-              Technical Stack
-            </h3>
-            {[
-              { label: 'Token-2022', desc: 'Native transfer fee extension — 1.5% withheld on every transfer', icon: '⚡' },
-              { label: 'Solana Devnet', desc: 'Real on-chain transactions, zero mainnet value or risk', icon: '🔗' },
-              { label: 'GitHub Actions', desc: 'Harvest workflow runs the endgame.sh script — not a simulation', icon: '⚙' },
-              { label: 'No Smart Contracts', desc: 'Interface calls Token-2022 native instructions only', icon: '🔐' },
-            ].map((item) => (
+                className="rounded-lg px-4 py-3"
+                style={{ background: 'rgba(159,176,201,0.08)', border: '1px solid rgba(159,176,201,0.2)' }}
+              >
+                <p className="text-xs leading-relaxed" style={{ color: '#c3c9d4' }}>
+                  Everything here runs on Solana Devnet — test tokens, zero real value, zero relationship to mainnet.
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Mission card */}
               <div
-                key={item.label}
-                className="flex items-start gap-3 px-4 py-3 rounded-lg"
+                className="rounded-xl p-5 flex flex-col gap-3"
                 style={{
-                  background: 'rgba(14,10,7,0.7)',
-                  border: '1px solid rgba(234,88,12,0.1)',
+                  background: 'rgba(26,18,12,0.8)',
+                  border: '1px solid rgba(234,88,12,0.15)',
                 }}
               >
-                <span className="text-base mt-0.5 flex-shrink-0">{item.icon}</span>
-                <div>
-                  <div className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>{item.label}</div>
-                  <div className="text-xs leading-relaxed mt-0.5" style={{ color: 'rgba(240,236,228,0.6)' }}>{item.desc}</div>
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-1 h-6 rounded-full"
+                    style={{ background: 'linear-gradient(to bottom, var(--accent), var(--glow))' }}
+                  />
+                  <h3 className="font-bold text-base" style={{ color: 'var(--text)' }}>Our Mission</h3>
                 </div>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.75)' }}>
+                  <span className="text-ember font-semibold">$ASHEM</span> is a memecoin built on{' '}
+                  <span className="text-ember font-semibold">Solana&apos;s Token-2022 standard</span>, with an automated,
+                  on-chain burn-and-fee mechanism. This site is its{' '}
+                  <strong style={{ color: 'var(--text)' }}>devnet demo</strong> — a way to verify that mechanism
+                  yourself, on-chain and ahead of mainnet, without taking our word for it. Every interaction here —
+                  transfers, claims, harvests — is a real transaction on Solana Devnet.
+                </p>
               </div>
-            ))}
-          </div>
 
-          {/* Mascot standing + caption */}
-          <div className="flex items-end gap-4 mt-2">
-            <img
-              src="/mascot-standing.png"
-              alt="Ash mascot — full body standing"
-              className="h-28 flex-shrink-0 mascot-float"
-              style={{
-                width: 'auto',
-                filter: 'drop-shadow(0 0 18px rgba(234,88,12,0.6)) drop-shadow(0 4px 12px rgba(0,0,0,0.7))',
-              }}
-            />
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.65)' }}>
-              Born from the forge of Solana&apos;s devnet. Every crack in Ash&apos;s obsidian skin tells a story of tokens burned, fees harvested, and the chain kept honest.
-            </p>
-          </div>
+              {/* Tech stack */}
+              <div className="flex flex-col gap-3">
+                <h3 className="font-bold text-sm tracking-wider uppercase" style={{ color: 'var(--muted)' }}>
+                  Technical Stack
+                </h3>
+                {[
+                  { label: 'Token-2022', desc: 'Native transfer fee extension — 1.5% withheld on every transfer', icon: '⚡' },
+                  { label: 'Solana Devnet', desc: 'Real on-chain transactions, zero mainnet value or risk', icon: '🔗' },
+                  { label: 'GitHub Actions', desc: 'Harvest workflow runs the endgame.sh script — not a simulation', icon: '⚙' },
+                  { label: 'No Smart Contracts', desc: 'Interface calls Token-2022 native instructions only', icon: '🔐' },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className="flex items-start gap-3 px-4 py-3 rounded-lg"
+                    style={{
+                      background: 'rgba(14,10,7,0.7)',
+                      border: '1px solid rgba(234,88,12,0.1)',
+                    }}
+                  >
+                    <span className="text-base mt-0.5 flex-shrink-0">{item.icon}</span>
+                    <div>
+                      <div className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>{item.label}</div>
+                      <div className="text-xs leading-relaxed mt-0.5" style={{ color: 'rgba(240,236,228,0.6)' }}>{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-          {/* Disclaimer */}
-          <div
-            className="rounded-lg px-4 py-3"
-            style={{
-              background: 'rgba(220,38,38,0.08)',
-              border: '1px solid rgba(220,38,38,0.2)',
-            }}
-          >
-            <p className="text-xs leading-relaxed" style={{ color: 'rgba(248,113,113,0.85)' }}>
-              <strong>Reminder:</strong> The $ASHEM tokens in this demo are devnet-only and have zero monetary value. Nothing here is financial advice, an allocation, or a mainnet token offering.
-            </p>
-          </div>
+              {/* Mascot standing + caption */}
+              <div className="flex items-end gap-4 mt-2">
+                <img
+                  src="/mascot-standing.png"
+                  alt="Ash mascot — full body standing"
+                  className="h-28 flex-shrink-0 mascot-float"
+                  style={{
+                    width: 'auto',
+                    filter: 'drop-shadow(0 0 18px rgba(234,88,12,0.6)) drop-shadow(0 4px 12px rgba(0,0,0,0.7))',
+                  }}
+                />
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,236,228,0.65)' }}>
+                  Born from the forge of Solana&apos;s devnet. Every crack in Ash&apos;s obsidian skin tells a story of tokens burned, fees harvested, and the chain kept honest.
+                </p>
+              </div>
+
+              {/* Disclaimer */}
+              <div
+                className="rounded-lg px-4 py-3"
+                style={{
+                  background: 'rgba(220,38,38,0.08)',
+                  border: '1px solid rgba(220,38,38,0.2)',
+                }}
+              >
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(248,113,113,0.85)' }}>
+                  <strong>Reminder:</strong> The $ASHEM tokens in this demo are devnet-only and have zero monetary value. Nothing here is financial advice, an allocation, or a mainnet token offering.
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </aside>
 

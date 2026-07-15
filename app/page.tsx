@@ -2,6 +2,7 @@
 import { useState, useCallback } from 'react'
 import { RiskDisclaimer } from '@/components/RiskDisclaimer'
 import { HeroBanner } from '@/components/HeroBanner'
+import { GettingStartedCard } from '@/components/GettingStartedCard'
 import { MagmaTank } from '@/components/MagmaTank'
 import { VerifyBar } from '@/components/VerifyBar'
 import { MascotCard } from '@/components/MascotCard'
@@ -39,6 +40,9 @@ export default function Home() {
       >
         {/* ── Hero Banner ── */}
         <HeroBanner />
+
+        {/* ── Getting Started: onboarding for people new to devnet wallets ── */}
+        <GettingStartedCard />
 
         {/* ── Section: Live On-Chain State (Magma Tank) ── */}
         <MagmaTank
