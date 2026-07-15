@@ -251,3 +251,10 @@ body {
   border: 1px solid rgba(234, 88, 12, 0.3) !important;
   border-radius: 1.25rem !important;
 }
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+.wallet-adapter-button-trigger:focus-visible {
+  outline: 3px solid var(--glow);
+  outline-offset: 3px;
+}
