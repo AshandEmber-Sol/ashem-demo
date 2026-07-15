@@ -36,7 +36,7 @@ export async function POST() {
   }
   lastDispatch = now
 
-  // El dispatch no devuelve run_id: hay que buscar el run recién creado
+  // The dispatch doesn't return a run_id: we have to look up the run that was just created
   let runId: number | null = null
   let runUrl: string | null = null
   for (let i = 0; i < 8; i++) {
