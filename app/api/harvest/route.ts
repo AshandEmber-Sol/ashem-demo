@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { acquireCooldown, releaseCooldown } from '@/lib/cooldown'
 
 const TOKEN = process.env.GH_DISPATCH_TOKEN
 const REPO = process.env.GH_REPO || 'AshandEmber-Sol/-ASHEM'
@@ -7,8 +8,12 @@ const GH = 'https://api.github.com'
 
 export const runtime = 'nodejs'
 
-let lastDispatch = 0
+// Global cooldown: one dispatch per window across ALL instances. Backed by
+// Redis (Upstash) so it survives serverless cold starts and is atomic under
+// concurrent requests — an in-memory counter let parallel invocations each
+// pass and spam GitHub Actions (real CI minutes).
 const COOLDOWN_MS = 60_000
+const COOLDOWN_KEY = 'harvest:cooldown'
 
 function ghHeaders() {
   return {
@@ -21,20 +26,27 @@ function ghHeaders() {
 export async function POST() {
   if (!TOKEN) return NextResponse.json({ error: 'server not configured' }, { status: 500 })
 
-  const now = Date.now()
-  if (now - lastDispatch < COOLDOWN_MS) {
-    const wait = Math.ceil((COOLDOWN_MS - (now - lastDispatch)) / 1000)
+  // Atomically claim the dispatch slot before doing anything.
+  const slot = await acquireCooldown(COOLDOWN_KEY, COOLDOWN_MS)
+  if (!slot.ok) {
+    const wait = Math.ceil(slot.waitMs / 1000)
     return NextResponse.json({ error: `a harvest ran recently — try again in ~${wait}s` }, { status: 429 })
   }
 
   const dispatchedAt = new Date().toISOString()
-  const res = await fetch(`${GH}/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`, {
-    method: 'POST', headers: ghHeaders(), body: JSON.stringify({ ref: 'main' }),
-  })
+  let res: Response
+  try {
+    res = await fetch(`${GH}/repos/${REPO}/actions/workflows/${WORKFLOW}/dispatches`, {
+      method: 'POST', headers: ghHeaders(), body: JSON.stringify({ ref: 'main' }),
+    })
+  } catch (e: any) {
+    await releaseCooldown(COOLDOWN_KEY) // dispatch never happened -> allow retry
+    return NextResponse.json({ error: 'dispatch failed', detail: String(e?.message ?? e) }, { status: 502 })
+  }
   if (res.status !== 204) {
+    await releaseCooldown(COOLDOWN_KEY) // dispatch rejected -> allow retry
     return NextResponse.json({ error: 'dispatch failed', detail: await res.text() }, { status: 502 })
   }
-  lastDispatch = now
 
   // The dispatch doesn't return a run_id: we have to look up the run that was just created
   let runId: number | null = null
