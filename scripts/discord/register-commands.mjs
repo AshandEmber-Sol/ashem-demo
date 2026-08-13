@@ -28,9 +28,9 @@ const commands = [
   {
     type: CHAT_INPUT,
     name: 'verificar-mint',
-    description: 'Verify a token mint live on-chain: mint/freeze authority + Token-2022 extensions.',
+    description: 'Verify a mint live on-chain (defaults to $ASHEM; pass any address to check it).',
     options: [
-      { type: STRING, name: 'direccion', description: 'The mint address to verify (base58).', required: true },
+      { type: STRING, name: 'direccion', description: 'Mint to verify (base58). Leave empty to verify the official $ASHEM mint.', required: false },
     ],
   },
   {

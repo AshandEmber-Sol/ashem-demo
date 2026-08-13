@@ -32,7 +32,9 @@ function authorityLine(value: string | null, expectRevoked: boolean): string {
 // /verificar-mint <address>
 // ─────────────────────────────────────────────────────────────────────────────
 export async function handleVerificarMint(address: string): Promise<MessagePayload> {
-  const addr = address.trim();
+  // Default to the official $ASHEM mint when no address is passed; any address still
+  // works for the anti-scam "is this token real?" case.
+  const addr = address.trim() || MINT;
   if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr)) {
     return { embeds: [{
       title: 'Invalid address',
@@ -68,7 +70,10 @@ export async function handleVerificarMint(address: string): Promise<MessagePaylo
   const fee = info.transferFee?.newerTransferFee;
   const feeBps = fee?.transferFeeBasisPoints;
   const maxFee = fee?.maximumFee;
-  const uncapped = String(maxFee) === '18446744073709551615';
+  // u64::MAX (18446744073709551615) arrives from jsonParsed as a JS number that loses
+  // precision (rounds to 2^64), so an exact string compare misses it. Treat any near-u64
+  // value as uncapped — real per-tx caps are orders of magnitude below 2^63.
+  const uncapped = String(maxFee) === '18446744073709551615' || Number(maxFee) >= 2 ** 63;
 
   const fields: NonNullable<Embed['fields']> = [
     { name: 'Token program (owner)', value: canonical
