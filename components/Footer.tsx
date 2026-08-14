@@ -21,10 +21,13 @@ export function Footer() {
         mechanics. The devnet tokens here have zero monetary value and no claim on any mainnet asset.
       </p>
 
-      {/* Social / profile links + legal */}
+      {/* Social / community links + legal */}
       <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
         <ExternalLink site="x" href="https://x.com/ashembersol" className="text-xs text-muted">
           @ashembersol
+        </ExternalLink>
+        <ExternalLink site="discord" href="https://discord.gg/x2EXHsztxp" className="text-xs text-muted">
+          Discord
         </ExternalLink>
         <ExternalLink site="github" href="https://github.com/AshandEmber-Sol" className="text-xs text-muted">
           AshandEmber-Sol
