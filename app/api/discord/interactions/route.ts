@@ -7,7 +7,7 @@
 // or a slow RPC, using the full 15-min interaction-token window.
 
 import { after, NextRequest, NextResponse } from 'next/server';
-import { requireEnv } from '../../../../lib/ashem/config';
+import { requireEnv, rpcUrl } from '../../../../lib/ashem/config';
 import { isValidDiscordRequest } from '../../../../lib/discord/verify';
 import { editOriginalResponse, type MessagePayload } from '../../../../lib/discord/rest';
 import {
@@ -120,7 +120,26 @@ export async function POST(req: NextRequest) {
   });
 }
 
-// A GET is handy for a quick "is it deployed" check in a browser.
+// A GET is handy for a quick "is it deployed" check in a browser. It also reports which
+// RPC provider is active — hostname only, never the API key (which lives in the query
+// string / path, and .hostname excludes both).
 export async function GET() {
-  return NextResponse.json({ ok: true, service: 'ashem-discord-interactions' });
+  let rpcHost = 'unknown';
+  let rpcProvider = 'unknown';
+  try {
+    rpcHost = new URL(rpcUrl()).hostname;
+    rpcProvider = /helius/i.test(rpcHost)
+      ? 'helius'
+      : /(^|\.)api\.mainnet-beta\.solana\.com$/i.test(rpcHost)
+        ? 'public-mainnet'
+        : 'custom';
+  } catch {
+    /* leave as unknown */
+  }
+  return NextResponse.json({
+    ok: true,
+    service: 'ashem-discord-interactions',
+    rpcProvider,
+    rpcHost,
+  });
 }
