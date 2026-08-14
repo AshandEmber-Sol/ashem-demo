@@ -9,7 +9,6 @@ import { MascotCard } from '@/components/MascotCard'
 import { ClaimButton } from '@/components/ClaimButton'
 import { TransferForm } from '@/components/TransferForm'
 import { HarvestButton } from '@/components/HarvestButton'
-import { ExternalLink } from '@/components/ExternalLink'
 
 export default function Home() {
   const [acknowledged, setAcknowledged] = useState(false)
@@ -79,32 +78,6 @@ export default function Home() {
 
         {/* ── Section: Harvest & Burn ── */}
         <HarvestButton onErupt={handleErupt} />
-
-        {/* Footer */}
-        <footer className="pt-4 text-center flex flex-col gap-3">
-          <div
-            className="h-px w-full"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(234,88,12,0.2), transparent)' }}
-          />
-          <p className="text-xs text-muted leading-relaxed">
-            This site is a Solana Devnet demo of the <span style={{ color: 'rgba(240,236,228,0.75)' }}>$ASHEM</span>{' '}token&apos;s
-            Token-2022 mechanics. The devnet tokens here have zero monetary value and no claim on any mainnet asset.
-          </p>
-
-          {/* Social / profile links */}
-          <div className="flex items-center justify-center gap-5">
-            <ExternalLink site="x" href="https://x.com/ashembersol" className="text-xs text-muted">
-              @ashembersol
-            </ExternalLink>
-            <ExternalLink site="github" href="https://github.com/AshandEmber-Sol" className="text-xs text-muted">
-              AshandEmber-Sol
-            </ExternalLink>
-          </div>
-
-          <p className="mono text-xs" style={{ color: 'rgba(234,88,12,0.4)' }}>
-            Built with Token-2022 · Solana Devnet · GitHub Actions
-          </p>
-        </footer>
       </main>
     </>
   )
