@@ -253,6 +253,13 @@ export default function TokenProof() {
           <p className="fine-print">Anything not on this list is not us. Report impostors with /reportar-scam in Discord.</p>
         </section>
 
+        <section className="liquidity-notice">
+          <span className="ln-mark" aria-hidden="true">◆</span>
+          <div>
+            <strong>Liquidity isn&apos;t open yet.</strong> $ASHEM is live on mainnet, but there is <strong>no official pool and no way to buy it right now</strong>. Any pool, presale, or listing claiming to be $ASHEM today is fake. Trading opens later — when it does, it&apos;ll be announced only through the official links above.
+          </div>
+        </section>
+
         <section className="safety">
           <p className="eyebrow">STAYING SAFE</p>
           <div>

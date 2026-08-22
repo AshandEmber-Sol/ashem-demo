@@ -139,6 +139,11 @@
 .ashem-landing .warning a { color: var(--slate); border-bottom: 1px solid var(--slate-edge); }
 .ashem-landing .warning a:hover { color: #cbd5e1; }
 
+/* liquidity notice — pre-liquidity, anti-scam (cold slate, a touch more prominent than the disclaimer) */
+.ashem-landing .liquidity-notice { display: flex; gap: 12px; align-items: flex-start; margin: 28px 0 0; border: 1px solid var(--slate-edge); border-radius: 12px; background: rgba(100, 116, 139, 0.06); padding: 16px 18px; font-size: 12px; line-height: 1.65; color: var(--dim); }
+.ashem-landing .liquidity-notice .ln-mark { color: var(--slate-txt); font-size: 12px; line-height: 1.65; flex: none; }
+.ashem-landing .liquidity-notice strong { color: var(--foreground); font-weight: 600; }
+
 @media (max-width: 700px) {
   .ashem-landing .topbar { padding: 0 20px; }
   .ashem-landing nav { gap: 10px; }
