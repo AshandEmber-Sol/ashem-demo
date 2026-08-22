@@ -126,6 +126,7 @@ export default function TokenProof() {
         <nav aria-label="Primary navigation">
           <button type="button" onClick={() => setTab('verify')}>Verify</button>
           <button type="button" onClick={() => setTab('transparency')}>Transparency</button>
+          <a href="/hearth">The Hearth</a>
           <a href={LINKS.demo}>Demo</a>
           <span className="live-pill"><i /> LIVE ON MAINNET</span>
         </nav>
@@ -143,7 +144,7 @@ export default function TokenProof() {
             </div>
           </div>
           <div className="flame-wrap" aria-hidden="true">
-          <Image src="/ash-ember-nobg.png" alt="" width={300} height={300} className="hero-mascot" style={{ height: 'auto' }} priority /> 
+            <Image src="/ash-ember-nobg.png" alt="" width={300} height={300} className="hero-mascot" style={{ height: 'auto' }} priority />
           </div>
         </section>
 

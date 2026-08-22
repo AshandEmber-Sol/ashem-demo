@@ -44,6 +44,12 @@ export function Footer() {
           AshandEmber-Sol
         </ExternalLink>
         <Link
+          href="/hearth"
+          className="text-xs text-muted underline decoration-transparent underline-offset-2 transition-colors hover:text-accent hover:decoration-accent"
+        >
+          The Hearth
+        </Link>
+        <Link
           href="/terms"
           className="text-xs text-muted underline decoration-transparent underline-offset-2 transition-colors hover:text-accent hover:decoration-accent"
         >

@@ -15,6 +15,7 @@ import {
   handleTesoreria, handleVerificarMint,
 } from '../../../../lib/discord/handlers';
 import { handleReportarScam } from '../../../../lib/discord/scam';
+import { recordVerification } from '../../../../lib/hearth-metrics';
 
 export const runtime = 'nodejs'; // signature verify + after() + fetch; not Edge.
 export const dynamic = 'force-dynamic';
@@ -111,6 +112,10 @@ export async function POST(req: NextRequest) {
       await editOriginalResponse(applicationId, interaction.token, payload);
     } catch {
       // Nothing more we can do — the interaction token may have expired.
+    }
+    // The Hearth: count community verifications (aggregate only, no user IDs). Best-effort.
+    if (name === 'verificar-mint' || name === 'supply' || name === 'contrato' || name === 'tesoreria') {
+      try { await recordVerification(); } catch { /* metrics are best-effort */ }
     }
   });
 
