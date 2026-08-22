@@ -1,0 +1,91 @@
+'use client'
+// The devnet demo, moved verbatim from app/page.tsx → app/demo/page.tsx.
+// Only change: the sticky TestnetBanner + Navbar (which used to be global in layout.tsx)
+// now live here, so the testnet banner shows on the demo but NOT on the mainnet landing.
+import { useState, useCallback } from 'react'
+import { TestnetBanner } from '@/components/TestnetBanner'
+import { Navbar } from '@/components/Navbar'
+import { RiskDisclaimer } from '@/components/RiskDisclaimer'
+import { HeroBanner } from '@/components/HeroBanner'
+import { GettingStartedCard } from '@/components/GettingStartedCard'
+import { MagmaTank } from '@/components/MagmaTank'
+import { VerifyBar } from '@/components/VerifyBar'
+import { MascotCard } from '@/components/MascotCard'
+import { ClaimButton } from '@/components/ClaimButton'
+import { TransferForm } from '@/components/TransferForm'
+import { HarvestButton } from '@/components/HarvestButton'
+
+export default function DemoPage() {
+  const [acknowledged, setAcknowledged] = useState(false)
+  const [supplyOverride, setSupplyOverride] = useState<number | null>(null)
+  const [eruptionKey, setEruptionKey] = useState(0)
+
+  // When harvest succeeds, trigger a visual decrease to simulate burning
+  const handleErupt = useCallback(() => {
+    setEruptionKey((k) => k + 1)
+    // MagmaTank will re-fetch from chain automatically, but we flash the panel
+  }, [])
+
+  return (
+    <>
+      {/* testnet chrome — demo only */}
+      <div className="sticky top-0 z-50">
+        <TestnetBanner />
+        <Navbar />
+      </div>
+
+      {/* Risk Disclaimer gate */}
+      {!acknowledged && <RiskDisclaimer onAcknowledge={() => setAcknowledged(true)} />}
+
+      {/* Main dApp content */}
+      <main
+        className="max-w-3xl mx-auto px-4 sm:px-6 pb-16 flex flex-col gap-6"
+        style={{
+          paddingTop: '1.5rem',
+          opacity: acknowledged ? 1 : 0.15,
+          filter: acknowledged ? 'none' : 'blur(4px)',
+          transition: 'opacity 0.8s ease, filter 0.8s ease',
+          pointerEvents: acknowledged ? 'auto' : 'none',
+        }}
+      >
+        {/* ── Hero Banner ── */}
+        <HeroBanner />
+
+        {/* ── Getting Started: onboarding for people new to devnet wallets ── */}
+        <GettingStartedCard />
+
+        {/* ── Section: Live On-Chain State (Magma Tank) ── */}
+        <MagmaTank key={eruptionKey} onSupplyChange={setSupplyOverride} supplyOverride={null} />
+
+        {/* ── Verify: no custom contract, inspect on GitHub / Solscan (Req 6.3) ── */}
+        <VerifyBar />
+
+        {/* ── Section divider ── */}
+        <div className="flex items-center gap-4">
+          <div className="flex-1 h-px" style={{ background: 'rgba(234,88,12,0.15)' }} />
+          <span className="text-xs text-muted font-semibold tracking-widest uppercase">Transaction Zone</span>
+          <div className="flex-1 h-px" style={{ background: 'rgba(234,88,12,0.15)' }} />
+        </div>
+
+        {/* ── Meet Ash ── */}
+        <MascotCard />
+
+        {/* ── Section: Get Test Funds ── */}
+        <ClaimButton />
+
+        {/* ── Section: Send $ASHEM ── */}
+        <TransferForm />
+
+        {/* ── Section divider ── */}
+        <div className="flex items-center gap-4">
+          <div className="flex-1 h-px" style={{ background: 'rgba(234,88,12,0.15)' }} />
+          <span className="text-xs text-muted font-semibold tracking-widest uppercase">Burn Engine</span>
+          <div className="flex-1 h-px" style={{ background: 'rgba(234,88,12,0.15)' }} />
+        </div>
+
+        {/* ── Section: Harvest & Burn ── */}
+        <HarvestButton onErupt={handleErupt} />
+      </main>
+    </>
+  )
+}

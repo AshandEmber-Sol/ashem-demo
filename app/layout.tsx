@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
-import { TestnetBanner } from '@/components/TestnetBanner'
-import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+
+// The sticky TestnetBanner + Navbar used to live here (global). They moved to /demo
+// only — the mainnet landing (/) has its own topbar and must not show a testnet banner.
+// Footer stays global (landing, /demo, /terms, /risk all use it).
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -21,10 +23,10 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Ash & Ember ($ASHEM) — Devnet Demo',
+  title: 'Ash & Ember · $ASHEM',
   description:
-    'A live, immersive on-chain demonstration of Solana Token-2022. Every action triggers a real devnet transaction. Zero mainnet value.',
-  keywords: ['Solana', 'Token-2022', 'devnet', 'ASHEM', 'Ash & Ember', 'crypto demo'],
+    "A Solana Token-2022 memecoin whose every mechanic is verifiable on-chain. We don't ask for trust — we publish proof.",
+  keywords: ['Solana', 'Token-2022', 'ASHEM', 'Ash & Ember', 'memecoin', 'on-chain'],
 }
 
 export const viewport = {
@@ -36,10 +38,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`bg-bg ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen font-sans">
         <Providers>
-          <div className="sticky top-0 z-50">
-            <TestnetBanner />
-            <Navbar />
-          </div>
           {children}
           <Footer />
         </Providers>
