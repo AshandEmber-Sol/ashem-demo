@@ -107,9 +107,9 @@ export default function Hearth() {
           <p className="hero-copy">$ASHEM burns toward a fixed floor of 300M — and then it stops, forever.<br />This is how far the fire has traveled.</p>
           <span className="status-badge"><span className="status-dot" />AWAITING THE FIRST BURN</span>
 
-          <div className="timeline-wrap" aria-label="Burn progress timeline">
-            <div className="timeline-line" />
+                    <div className="timeline-wrap" aria-label="Burn progress timeline">
             <div className="timeline-stages">
+              <div className="timeline-line" />
               {STAGES.map((stage) => (
                 <div className={`timeline-stage ${stage.state}`} key={stage.label}>
                   <span className="stage-node" aria-hidden="true">{stage.state === 'done' ? '✓' : ''}</span>
