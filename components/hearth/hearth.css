@@ -46,7 +46,7 @@
 .ashem-hearth .status-badge { display: inline-flex; align-items: center; gap: 8px; color: var(--amber); margin-top: 34px; }
 .ashem-hearth .status-badge .status-dot { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
 .ashem-hearth .timeline-wrap { margin-top: 50px; position: relative; }
-.ashem-hearth .timeline-line { height: 2px; background: linear-gradient(90deg, var(--green) 0 25%, var(--orange) 49%, #302e2a 49%); position: absolute; top: 9px; left: 9%; right: 9%; }
+.ashem-hearth .timeline-line { height: 2px; background: linear-gradient(90deg, var(--green) 0 25%, var(--orange) 49%, #4f4941 49%); position: absolute; top: 9px; left: 9%; right: 9%; }
 .ashem-hearth .timeline-stages { display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
 .ashem-hearth .timeline-stage { display: flex; align-items: center; flex-direction: column; text-align: center; color: var(--dim); gap: 11px; font-size: 13px; }
 .ashem-hearth .timeline-stage.done { color: #eeeae4; }
