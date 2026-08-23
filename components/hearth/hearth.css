@@ -111,7 +111,10 @@
 }
 @media (max-width: 600px) {
   .ashem-hearth .site-header { padding: 0 18px; }
-  .ashem-hearth .nav-links > a:not(.live-pill) { display: none; }
+  .ashem-hearth .nav-links { gap: 16px; font-size: 12px; min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .ashem-hearth .nav-links::-webkit-scrollbar { display: none; }
+  .ashem-hearth .nav-links > a { white-space: nowrap; padding: 10px 0; }
+  .ashem-hearth .nav-links > .live-pill { display: none; }
   .ashem-hearth .brand-code { display: none; }
   .ashem-hearth h1 { font-size: 34px; }
   .ashem-hearth .hero-copy { font-size: 14px; }
