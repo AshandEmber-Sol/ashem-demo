@@ -76,6 +76,8 @@ function scoreFromAttributes(a: Record<string, unknown>, poolAddress: string): R
     ratioPct,
     risk,
     veryLowAbsolute: reserveUsd > 0 && reserveUsd < LOW_ABSOLUTE_USD,
+    // Large-cap: a single pool's liquidity understates real depth (spread across pools/CEXes).
+    largeCap: fdvUsd >= 50_000_000,
     source: 'geckoterminal',
     fetchedAt: Date.now(),
   }
