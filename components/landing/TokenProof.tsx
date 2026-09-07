@@ -61,10 +61,10 @@ function CopyButton({ value }: { value: string }) {
   )
 }
 
-export default function TokenProof() {
+  export default function TokenProof({ initial = null }: { initial?: LiveState | null }) {
   const [tab, setTab] = useState<Tab>('overview')
   const [openCheck, setOpenCheck] = useState<number | null>(null)
-  const [live, setLive] = useState<LiveState | null>(null)
+  const [live, setLive] = useState<LiveState | null>(initial)
   const [failed, setFailed] = useState(false)
   const [, forceTick] = useState(0)
 
@@ -97,6 +97,8 @@ export default function TokenProof() {
   const freezeRevoked = live ? live.freezeAuthority === null : true
   const feeLive = live ? live.feeAuthority : FEE_AUTH
   const supplyText = live ? fmt(live.supply) : '1,000,000,000'
+  const supplyNow = live ? fmt(Math.round(live.supply)) : '1,000,000,000'
+  const burnedNow = live ? fmt(Math.round(live.burned)) : '—'
   const updatedAgo = live ? Math.max(0, Math.round((Date.now() - live.ts) / 1000)) : null
 
   const tabLabel = useMemo(
@@ -162,8 +164,9 @@ export default function TokenProof() {
           {tab === 'overview' && (
             <>
               <div className="metrics">
-                <Metric label="TOTAL SUPPLY" value="1,000,000,000" note="Fixed cap · mint authority revoked" />
-                <Metric label="BURNABLE" value="700,000,000" note="70% of supply, burned over time" />
+                <Metric label="MAX SUPPLY" value="1,000,000,000" note="Fixed cap · mint authority revoked" />
+                <Metric label="SUPPLY NOW · LIVE" value={supplyNow} note="Read live from the chain — only shrinks" />
+                <Metric label="BURNED · LIVE" value={burnedNow} note="Permanently removed, toward the floor" />
                 <Metric label="BURN FLOOR" value="300,000,000" note="30% — the burn stops here" />
               </div>
               <div className="token-meta">

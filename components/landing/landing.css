@@ -68,7 +68,7 @@
 .ashem-landing .tabs button.active { color: var(--foreground); border-bottom: 2px solid var(--primary); }
 .ashem-landing .panel { padding: 32px 0 38px; border-bottom: 1px solid var(--border); }
 .ashem-landing .panel h2 { margin: 0 0 7px; font-size: 18px; font-weight: 500; }
-.ashem-landing .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin: 32px 0 24px; }
+.ashem-landing .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin: 32px 0 24px; }
 .ashem-landing .metric strong { display: block; font: 28px var(--font-jb); letter-spacing: -.06em; margin-bottom: 2px; color: #fbfaf8; }
 .ashem-landing .metric p:last-child, .ashem-landing .step p:last-child, .ashem-landing .mini-card p, .ashem-landing .source-card p, .ashem-landing .cta p { color: #8c8780; font-size: 10px; margin: 0; }
 .ashem-landing .token-meta { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 25px; padding: 18px 0; color: #858079; font-size: 10px; }
