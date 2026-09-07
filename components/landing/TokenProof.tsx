@@ -256,7 +256,7 @@ export default function TokenProof() {
         <section className="liquidity-notice">
           <span className="ln-mark" aria-hidden="true">◆</span>
           <div>
-            <strong>Liquidity isn&apos;t open yet.</strong> $ASHEM is live on mainnet, but there is <strong>no official pool and no way to buy it right now</strong>. Any pool, presale, or listing claiming to be $ASHEM today is fake. Trading opens later — when it does, it&apos;ll be announced only through the official links above.
+            <strong>Liquidity is open.</strong> There is now <strong>one official $ASHEM pool</strong>, on Raydium, and its liquidity is <strong>permanently locked</strong>. Before buying anywhere, confirm the real token by its mint — <span className="mono">BGRvzRVpdPvzHQXPax5MqERsxZLprvWVTvUzpUUUhXot</span> — and check the live pool yourself in The Hearth. Any other pool, presale, or token calling itself $ASHEM is fake, and new links are announced only through the official ones above.
           </div>
         </section>
 
