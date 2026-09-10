@@ -22,6 +22,9 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const WSOL_MINT = 'So11111111111111111111111111111111111111112';
+// Raydium CPMM pool vaults for $ASHEM/SOL — verified on-chain from the pool state.
+const ASHEM_VAULT = '7ngxrDAYPxgK2daYjpvizrHHxSWku58BQmFnSSWRBjx';
+const WSOL_VAULT = 'EaUfSLEg2EKsEfoCknDn6rGzaLurRCtbDSBHTHhyVrLs';
 const BUY_COLOR = 0x22c55e; // green
 const SELL_COLOR = 0xef4444; // red
 const FOOTER = { text: VERIFY_TAGLINE };
@@ -66,11 +69,23 @@ interface HeliusSwapEvent {
   tokenOutputs?: HeliusTokenLeg[];
 }
 
+interface HeliusTokenBalanceChange {
+  userAccount?: string;
+  tokenAccount?: string;
+  mint?: string;
+  rawTokenAmount?: { tokenAmount?: string; decimals?: number };
+}
+interface HeliusAccountData {
+  account?: string;
+  nativeBalanceChange?: number;
+  tokenBalanceChanges?: HeliusTokenBalanceChange[];
+}
 interface HeliusEnhancedTx {
   signature?: string;
   type?: string;
   feePayer?: string;
   events?: { swap?: HeliusSwapEvent };
+  accountData?: HeliusAccountData[];
 }
 
 interface ParsedSwap {
@@ -81,10 +96,8 @@ interface ParsedSwap {
   signature: string;
 }
 
-/** Pull the $ASHEM leg + the SOL leg out of a Helius swap event. Returns null if this
- *  swap doesn't touch $ASHEM at all (webhook should already be scoped, but don't trust
- *  that blindly — re-verify here, same "verify, don't trust" rule as everywhere else). */
-function parseSwap(tx: HeliusEnhancedTx): ParsedSwap | null {
+/** Preferred path: Helius already recognized this as a swap and gave us the legs. */
+function parseFromSwapEvent(tx: HeliusEnhancedTx): ParsedSwap | null {
   const swap = tx.events?.swap;
   if (!swap) return null;
 
@@ -99,8 +112,6 @@ function parseSwap(tx: HeliusEnhancedTx): ParsedSwap | null {
   const ashemLeg = ashemOut ?? ashemIn!;
   const ashemAmount = Math.abs(Number(ashemLeg.tokenAmount ?? 0));
 
-  // SOL side: prefer the native SOL leg (real SOL); fall back to a WSOL token leg
-  // (Raydium CPMM usually trades against wrapped SOL token accounts, not native).
   let solAmount = 0;
   if (direction === 'buy') {
     if (swap.nativeInput) solAmount = Number(swap.nativeInput.amount ?? 0) / 1e9;
@@ -111,14 +122,43 @@ function parseSwap(tx: HeliusEnhancedTx): ParsedSwap | null {
   }
 
   const trader = ashemLeg.userAccount ?? tx.feePayer ?? 'unknown';
+  return { direction, trader, ashemAmount, solAmount, signature: tx.signature ?? '' };
+}
 
+/** Fallback: Helius doesn't recognize Raydium's CP-Swap program, so it tags these txs
+ *  as UNKNOWN with no swap event. Derive the trade from the pool VAULT balance deltas:
+ *  a real swap moves BOTH vaults in opposite directions; a harvest/transfer moves only
+ *  one (or neither) → filtered out naturally. Amounts are base units → /1e9 (9 decimals). */
+function parseFromVaultDeltas(tx: HeliusEnhancedTx): ParsedSwap | null {
+  let ashemDelta = 0; // pool's $ASHEM vault change (base units, signed)
+  let solDelta = 0;   // pool's WSOL vault change (base units, signed)
+
+  for (const a of tx.accountData ?? []) {
+    for (const tb of a.tokenBalanceChanges ?? []) {
+      const amt = Number(tb.rawTokenAmount?.tokenAmount ?? 0);
+      if (!amt) continue;
+      if (tb.tokenAccount === ASHEM_VAULT && tb.mint === MINT) ashemDelta += amt;
+      else if (tb.tokenAccount === WSOL_VAULT && tb.mint === WSOL_MINT) solDelta += amt;
+    }
+    if (a.account === WSOL_VAULT && a.nativeBalanceChange) solDelta += a.nativeBalanceChange;
+  }
+
+  if (ashemDelta === 0 || solDelta === 0) return null; // not a swap (e.g. a harvest)
+
+  // Pool perspective: on a BUY the pool loses $ASHEM and gains SOL; on a SELL, the reverse.
+  const direction: 'buy' | 'sell' = ashemDelta < 0 ? 'buy' : 'sell';
   return {
     direction,
-    trader,
-    ashemAmount,
-    solAmount,
+    trader: tx.feePayer ?? 'unknown',
+    ashemAmount: Math.abs(ashemDelta) / 1e9,
+    solAmount: Math.abs(solDelta) / 1e9,
     signature: tx.signature ?? '',
   };
+}
+
+/** Try the recognized-swap path first, then the vault-delta fallback (Raydium CP-Swap). */
+function parseSwap(tx: HeliusEnhancedTx): ParsedSwap | null {
+  return parseFromSwapEvent(tx) ?? parseFromVaultDeltas(tx);
 }
 
 async function buildEmbed(swap: ParsedSwap): Promise<Embed> {
