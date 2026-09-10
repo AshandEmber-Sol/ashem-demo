@@ -183,7 +183,8 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: 'invalid JSON' }, { status: 400 });
   }
-
+    // TEMP debug — quitar tras arreglar el parser
+  console.log('[buysell-debug]', JSON.stringify(body[0]).slice(0, 3800));
   // Minimum SOL size before it's worth posting, so single-lamport dust/arb bots don't
   // spam the channel. Default 0.05 SOL (~a few USD); override with ASHEM_BUY_ALERT_MIN_SOL.
   const minSol = Number(optionalEnv('ASHEM_BUY_ALERT_MIN_SOL', '0.05'));
