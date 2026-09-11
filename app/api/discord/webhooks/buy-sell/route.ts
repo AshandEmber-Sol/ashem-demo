@@ -27,7 +27,8 @@ const ASHEM_VAULT = '7ngxrDAYPxgK2daYjpvizrHHxSWku58BQmFnSSWRBjx';
 const WSOL_VAULT = 'EaUfSLEg2EKsEfoCknDn6rGzaLurRCtbDSBHTHhyVrLs';
 const BUY_COLOR = 0x22c55e; // green
 const SELL_COLOR = 0xef4444; // red
-const FOOTER = { text: VERIFY_TAGLINE };
+const LOGO_URL = 'https://ashem.xyz/ash-ember-nobg.png'; // hosted alongside the landing
+const FOOTER = { text: VERIFY_TAGLINE, icon_url: LOGO_URL };
 
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -44,13 +45,13 @@ function shortAddr(addr: string): string {
 // USD line. Uses Jupiter's public price endpoint (no API key required).
 async function getSolUsdPrice(): Promise<number | null> {
   try {
-    const res = await fetch('https://price.jup.ag/v6/price?ids=SOL', {
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd', {
       signal: AbortSignal.timeout(4000),
       cache: 'no-store',
     });
     if (!res.ok) return null;
-    const json = (await res.json()) as { data?: Record<string, { price?: number }> };
-    return json.data?.SOL?.price ?? null;
+    const json = (await res.json()) as { solana?: { usd?: number } };
+    return json.solana?.usd ?? null;
   } catch {
     return null;
   }
@@ -178,7 +179,7 @@ async function buildEmbed(swap: ParsedSwap): Promise<Embed> {
     // supply read failed — leave marketCapLine as 'unavailable', don't block the alert
   }
 
-  const bars = '🟢'.repeat(Math.min(20, Math.max(1, Math.round(swap.solAmount))));
+  const bars = (isBuy ? '🟢' : '🔴').repeat(Math.min(20, Math.max(1, Math.round(swap.solAmount))));
 
   return {
     title: isBuy ? '🟢 New $ASHEM buy' : '🔴 $ASHEM sell',
@@ -186,7 +187,7 @@ async function buildEmbed(swap: ParsedSwap): Promise<Embed> {
     color: isBuy ? BUY_COLOR : SELL_COLOR,
     url: `https://solscan.io/tx/${swap.signature}`,
     fields: [
-      { name: 'Spent', value: `${fmt(swap.solAmount, 4)} SOL${usdAmount ? ` (~$${fmt(usdAmount)})` : ''}`, inline: true },
+      { name: isBuy ? 'Spent' : 'Received', value: `${fmt(swap.solAmount, 4)} SOL${usdAmount ? ` (~$${fmt(usdAmount)})` : ''}`, inline: true },
       { name: isBuy ? 'Received' : 'Sold', value: `${fmt(swap.ashemAmount)} $ASHEM`, inline: true },
       { name: 'Trader', value: `\`${shortAddr(swap.trader)}\``, inline: true },
       { name: 'Price', value: priceInSol > 0 ? `${priceInSol.toFixed(12)} SOL/ASHEM` : 'n/a', inline: true },
@@ -196,6 +197,7 @@ async function buildEmbed(swap: ParsedSwap): Promise<Embed> {
         value: `[Solscan tx](https://solscan.io/tx/${swap.signature}) · [Dexscreener](https://dexscreener.com/solana/${MINT}) · [mint](${solscanToken(MINT)})`,
       },
     ],
+    thumbnail: { url: LOGO_URL },
     footer: FOOTER,
     timestamp: new Date().toISOString(),
   };
@@ -223,8 +225,7 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: 'invalid JSON' }, { status: 400 });
   }
-    // TEMP debug — quitar tras arreglar el parser
-  console.log('[buysell-debug]', JSON.stringify(body[0]).slice(0, 3800));
+  
   // Minimum SOL size before it's worth posting, so single-lamport dust/arb bots don't
   // spam the channel. Default 0.05 SOL (~a few USD); override with ASHEM_BUY_ALERT_MIN_SOL.
   const minSol = Number(optionalEnv('ASHEM_BUY_ALERT_MIN_SOL', '0.05'));
