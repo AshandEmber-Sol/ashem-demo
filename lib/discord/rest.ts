@@ -15,7 +15,7 @@ export interface Embed {
   color?: number;
   url?: string;
     fields?: { name: string; value: string; inline?: boolean }[];
-  thumbnail?: { url: string };
+  thumbnail?: { url: string };  image?: { url: string };
   footer?: { text: string; icon_url?: string };
   timestamp?: string;
 }

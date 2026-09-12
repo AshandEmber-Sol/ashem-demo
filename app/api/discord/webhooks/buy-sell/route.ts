@@ -222,7 +222,7 @@ async function buildEmbed(swap: ParsedSwap): Promise<Embed> {
         value: `[Solscan tx](https://solscan.io/tx/${swap.signature}) · [Dexscreener](https://dexscreener.com/solana/${MINT}) · [mint](${solscanToken(MINT)})`,
       },
     ],
-    thumbnail: { url: LOGO_URL },
+        image: { url: LOGO_URL }, // large, full-width brand image (not the tiny corner thumbnail)
     footer: FOOTER,
     timestamp: new Date().toISOString(),
   };
