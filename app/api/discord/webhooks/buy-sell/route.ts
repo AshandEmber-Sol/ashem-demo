@@ -131,20 +131,25 @@ function parseFromSwapEvent(tx: HeliusEnhancedTx): ParsedSwap | null {
  *  a real swap moves BOTH vaults in opposite directions; a harvest/transfer moves only
  *  one (or neither) → filtered out naturally. Amounts are base units → /1e9 (9 decimals). */
 function parseFromVaultDeltas(tx: HeliusEnhancedTx): ParsedSwap | null {
-  let ashemDelta = 0; // pool's $ASHEM vault change (base units, signed)
-  let solDelta = 0;   // pool's WSOL vault change (base units, signed)
+  let ashemDelta = 0;     // pool's $ASHEM vault change (base units, signed)
+  let solTokenDelta = 0;  // pool's WSOL vault change via token balance (base units, signed)
+  let solNativeDelta = 0; // pool's WSOL vault change via native lamports (fallback only)
 
   for (const a of tx.accountData ?? []) {
     for (const tb of a.tokenBalanceChanges ?? []) {
       const amt = Number(tb.rawTokenAmount?.tokenAmount ?? 0);
       if (!amt) continue;
       if (tb.tokenAccount === ASHEM_VAULT && tb.mint === MINT) ashemDelta += amt;
-      else if (tb.tokenAccount === WSOL_VAULT && tb.mint === WSOL_MINT) solDelta += amt;
+      else if (tb.tokenAccount === WSOL_VAULT && tb.mint === WSOL_MINT) solTokenDelta += amt;
     }
-    if (a.account === WSOL_VAULT && a.nativeBalanceChange) solDelta += a.nativeBalanceChange;
+    if (a.account === WSOL_VAULT && a.nativeBalanceChange) solNativeDelta += a.nativeBalanceChange;
   }
+  // Use the WSOL token delta if present, else the native fallback — NEVER both (that double-counts).
+  const solDelta = solTokenDelta !== 0 ? solTokenDelta : solNativeDelta;
 
   if (ashemDelta === 0 || solDelta === 0) return null; // not a swap (e.g. a harvest)
+  // A swap moves the two vaults in OPPOSITE directions. Same sign = add/remove liquidity → skip.
+  if ((ashemDelta > 0) === (solDelta > 0)) return null;
 
   // Pool perspective: on a BUY the pool loses $ASHEM and gains SOL; on a SELL, the reverse.
   const direction: 'buy' | 'sell' = ashemDelta < 0 ? 'buy' : 'sell';
@@ -155,6 +160,26 @@ function parseFromVaultDeltas(tx: HeliusEnhancedTx): ParsedSwap | null {
     solAmount: Math.abs(solDelta) / 1e9,
     signature: tx.signature ?? '',
   };
+}
+
+/** Signature dedup via Upstash Redis (SET NX): true = already posted → skip. Helius can
+ *  redeliver the same tx (retries / multi-match), so posting must be idempotent. No KV
+ *  configured → returns false (never blocks a post). Reuses KV_REST_API_* already in the app. */
+async function alreadyPosted(signature: string): Promise<boolean> {
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (!url || !token || !signature) return false;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(['SET', `buysell:${signature}`, '1', 'NX', 'PX', 600000]),
+    });
+    const j = (await res.json()) as { result?: string | null };
+    return j.result !== 'OK';
+  } catch {
+    return false;
+  }
 }
 
 /** Try the recognized-swap path first, then the vault-delta fallback (Raydium CP-Swap). */
@@ -234,7 +259,13 @@ export async function POST(req: NextRequest) {
   for (const tx of body) {
     const swap = parseSwap(tx);
     if (!swap || swap.ashemAmount <= 0) continue;
+    // viejo:
     if (swap.solAmount < minSol) continue;
+
+    try {
+// nuevo:
+    if (swap.solAmount < minSol) continue;
+    if (await alreadyPosted(swap.signature)) continue; // idempotent: skip duplicate deliveries
 
     try {
       const embed = await buildEmbed(swap);
